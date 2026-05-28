@@ -1,5 +1,4 @@
-name: Deploy Client & Server Separately
-
+name: Deploy Split Branches
 
 permissions:
   contents: write
@@ -11,62 +10,56 @@ on:
 
 jobs:
 
-  push-client:
+  client:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Push Client Folder To client-deploy Branch
+      - name: Push Client
         run: |
-
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
           mkdir client-temp
-          cp -r client/. client-temp/
+          cp -r client/* client-temp/
 
           git checkout --orphan client-deploy
 
           find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 
-          cp -r client-temp/. .
+          cp -r client-temp/* .
 
           rm -rf client-temp
 
           git add .
-
-          git commit -m "Deploy Client" || echo "No changes to commit"
+          git commit -m "Deploy Client"
 
           git push origin client-deploy --force
 
-  push-server:
+  server:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Push Server Folder To server-deploy Branch
+      - name: Push Server
         run: |
-
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
           mkdir server-temp
-          cp -r server/. server-temp/
+          cp -r server/* server-temp/
 
           git checkout --orphan server-deploy
 
           find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 
-          cp -r server-temp/. .
+          cp -r server-temp/* .
 
           rm -rf server-temp
 
           git add .
-
-          git commit -m "Deploy Server" || echo "No changes to commit"
+          git commit -m "Deploy Server"
 
           git push origin server-deploy --force

@@ -1,0 +1,56 @@
+name: Deploy Client & Server Separately
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+
+  push-client:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Push Client Folder To client-deploy Branch
+        run: |
+          git config --global user.name "KishanPatel58"
+          git config --global user.email "patelkishan3101@gmail.com"
+
+          git checkout --orphan client-deploy
+
+          find . -mindepth 1 -maxdepth 1 ! -name client ! -name .git -exec rm -rf {} +
+
+          mv client/* .
+          rm -rf client
+
+          git add .
+          git commit -m "Deploy Client"
+
+          git push origin client-deploy --force
+
+  push-server:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Push Server Folder To server-deploy Branch
+        run: |
+          git config --global user.name "KishanPatel58"
+          git config --global user.email "patelkishan3101@gmail.com"
+
+          git checkout --orphan server-deploy
+
+          find . -mindepth 1 -maxdepth 1 ! -name server ! -name .git -exec rm -rf {} +
+
+          mv server/* .
+          rm -rf server
+
+          git add .
+          git commit -m "Deploy Server"
+
+          git push origin server-deploy --force

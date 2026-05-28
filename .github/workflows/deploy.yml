@@ -1,6 +1,5 @@
 name: Deploy Client & Server Separately
 
-
 permissions:
   contents: write
 
@@ -18,28 +17,29 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Push Client Folder To client-deploy Branch
+      - name: Deploy Client
         run: |
 
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          mkdir client-temp
-          cp -r client/. client-temp/
+          mkdir out
 
-          git checkout --orphan client-deploy
+          cp -r client/. out/
 
-          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cd out
 
-          cp -r client-temp/. .
+          git init
 
-          rm -rf client-temp
+          git checkout -b client-deploy
 
           git add .
 
-          git commit -m "Deploy Client" || echo "No changes to commit"
+          git commit -m "Deploy Client"
 
-          git push origin client-deploy --force
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
+          git push --force origin client-deploy
 
   push-server:
     runs-on: ubuntu-latest
@@ -48,25 +48,26 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Push Server Folder To server-deploy Branch
+      - name: Deploy Server
         run: |
 
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          mkdir server-temp
-          cp -r server/. server-temp/
+          mkdir out
 
-          git checkout --orphan server-deploy
+          cp -r server/. out/
 
-          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cd out
 
-          cp -r server-temp/. .
+          git init
 
-          rm -rf server-temp
+          git checkout -b server-deploy
 
           git add .
 
-          git commit -m "Deploy Server" || echo "No changes to commit"
+          git commit -m "Deploy Server"
 
-          git push origin server-deploy --force
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+
+          git push --force origin server-deploy

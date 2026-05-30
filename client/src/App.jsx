@@ -11,14 +11,35 @@ export default function App() {
     return (
         <>
             <Routes>
+
                 <Route path="/" element={<Home />} />
+
                 <Route path="/login" element={<Login />} />
+
                 <Route element={<Layout />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/accounts" element={<Accounts />} />
-                    <Route path="/schedule" element={<Scheduler />} />
-                    <Route path="/ai-composer" element={<AIComposer />} />
+
+                    <Route
+                        path="/dashboard"
+                        element={<Dashboard />}
+                    />
+
+                    <Route
+                        path="/accounts"
+                        element={<Accounts />}
+                    />
+
+                    <Route
+                        path="/schedule"
+                        element={<Scheduler />}
+                    />
+
+                    <Route
+                        path="/ai-composer"
+                        element={<AIComposer />}
+                    />
+
                 </Route>
+
             </Routes>
         </>
     );

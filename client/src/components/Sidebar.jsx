@@ -1,8 +1,9 @@
 import { CalendarDaysIcon, LayoutDashboardIcon, LogOut, UsersIcon, Wand2Icon } from 'lucide-react';
 import React from 'react'
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
+  const navigate = useNavigate();
   const { logout, user } = {
     logout: () => {
       window.location.href = "/"
@@ -19,7 +20,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   return (
     <div className={`fixed !inset-y-0 left-0 !z-50 w-64 bg-white border-r border-slate-200 flex flex-col h-full transform transition-transform duration-200 ease-in-out md:relative md:!translate-x-0 ${isOpen ? "!translate-x-0" : "!-translate-x-full"}`}>
       {/* logo */}
-      <div className="!p-6 !pb-4">
+      <div onClick={()=>navigate("/")} className="!p-6 !pb-4 cursor-pointer">
         <div className="text-xl tracking-tight text-slate-800 flex items-center !gap-1.5">
           <img src="/logo.svg" alt="logo" className="size-6" />
           Scheduler

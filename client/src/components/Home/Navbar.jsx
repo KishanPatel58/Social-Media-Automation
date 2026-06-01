@@ -23,40 +23,23 @@ export default function Navbar() {
 
     useEffect(() => {
 
-        const savedTheme = localStorage.getItem("theme");
+        document.documentElement.classList.remove(
+            "light",
+            "dark"
+        );
 
-        if (savedTheme) {
+        document.documentElement.classList.add(
+            theme
+        );
 
-            setTheme(savedTheme);
-
-            document.documentElement.classList.toggle(
-                "dark",
-                savedTheme === "dark"
-            );
-
-        } else {
-
-            setTheme("light");
-
-            localStorage.setItem("theme", "light");
-        }
-
-    }, []);
+    }, [theme]);
 
     const themeHandle = () => {
 
-        const newTheme =
-            theme === "dark"
-                ? "light"
-                : "dark";
-
-        setTheme(newTheme);
-
-        localStorage.setItem("theme", newTheme);
-
-        document.documentElement.classList.toggle(
-            "dark",
-            newTheme === "dark"
+        setTheme(
+            theme === "light"
+                ? "dark"
+                : "light"
         );
     };
 

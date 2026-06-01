@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Accounts from "./pages/Accounts";
 import Scheduler from "./pages/Scheduler";
 import AIComposer from "./pages/AIComposer";
+import PageNotFound from "./components/NotFound/PageNotFound";
 
 export default function App() {
     return (
@@ -38,8 +39,10 @@ export default function App() {
                         element={<AIComposer />}
                     />
 
-                </Route>
+                    
 
+                </Route>
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </>
     );

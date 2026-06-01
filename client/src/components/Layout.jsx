@@ -1,144 +1,222 @@
-import React, { useState } from "react";
+import React, {
+    useContext,
+    useState,
+} from "react";
+
 import Sidebar from "./Sidebar";
-import { Outlet, useLocation } from "react-router-dom";
+
+import {
+    Outlet,
+    useLocation,
+} from "react-router-dom";
+
 import { MenuIcon } from "lucide-react";
 
+import { themeContext } from "../context/theme/ThemeContext";
+
 const pagetitle = {
-  "/dashboard": "Dashboard",
-  "/accounts": "Social Accounts",
-  "/schedule": "Post Scheduler",
-  "/ai-composer": "AI Composer",
+    "/dashboard": "Dashboard",
+    "/accounts": "Social Accounts",
+    "/schedule": "Post Scheduler",
+    "/ai-composer": "AI Composer",
 };
 
 const Layout = () => {
 
-  const location = useLocation();
+    const location = useLocation();
 
-  const title =
-    pagetitle[location.pathname] || "Social AI";
+    const { theme } =
+        useContext(themeContext);
 
-  const [isMobileMenuOpen, setIsMobileMenuOpen] =
-    useState(false);
+    const title =
+        pagetitle[location.pathname]
+        || "Social AI";
 
-  return (
+    const [
+        isMobileMenuOpen,
+        setIsMobileMenuOpen,
+    ] = useState(false);
 
-    <div className="flex h-screen bg-slate-50">
+    return (
 
-      {/* MOBILE OVERLAY */}
-
-      {
-        isMobileMenuOpen && (
-          <div
+        <div
             className={`
-        fixed inset-0
-        bg-black/50
-        z-40
-        md:hidden
+                flex
+                h-screen
 
-        transition-opacity duration-300
+                transition-colors duration-300
 
-        ${isMobileMenuOpen
-                ? "opacity-100 pointer-events-auto"
-                : "opacity-0 pointer-events-none"
-              }
-    `}
-            onClick={() => setIsMobileMenuOpen(false)}
-          />
-        )
-      }
+                ${
+                    theme === "light"
+                        ? "bg-slate-50"
+                        : "bg-[#0a0a0a]"
+                }
+            `}
+        >
 
-      {/* SIDEBAR */}
+            {/* MOBILE OVERLAY */}
 
-      <Sidebar
-        isOpen={isMobileMenuOpen}
-        setIsOpen={setIsMobileMenuOpen}
-      />
+            {
+                isMobileMenuOpen && (
+                    <div
+                        className={`
+                            fixed inset-0
 
-      {/* RIGHT SIDE */}
+                            z-40
+                            md:hidden
 
-      <div
-        className="
+                            transition-opacity duration-300
+
+                            ${
+                                theme === "light"
+                                    ? "bg-black/50"
+                                    : "bg-black/70"
+                            }
+
+                            ${
+                                isMobileMenuOpen
+                                    ? "opacity-100 pointer-events-auto"
+                                    : "opacity-0 pointer-events-none"
+                            }
+                        `}
+                        onClick={() =>
+                            setIsMobileMenuOpen(false)
+                        }
+                    />
+                )
+            }
+
+            {/* SIDEBAR */}
+
+            <Sidebar
+                isOpen={isMobileMenuOpen}
+                setIsOpen={setIsMobileMenuOpen}
+            />
+
+            {/* RIGHT SIDE */}
+
+            <div
+                className="
                     flex flex-col
                     flex-1
                     min-w-0
                 "
-      >
+            >
 
-        {/* HEADER */}
+                {/* HEADER */}
 
-        <header
-          className="
+                <header
+                    className={`
                         h-16
                         shrink-0
-                        bg-white
-                        border-b border-slate-200
+
+                        border-b
+
                         flex items-center
                         px-4 md:px-8
                         gap-4
-                    "
-        >
 
-          {/* MOBILE MENU BUTTON */}
+                        transition-colors duration-300
 
-          <button
-            className="
+                        ${
+                            theme === "light"
+
+                                ? "bg-white border-slate-200"
+
+                                : "bg-[#111111] border-[#ffffff10]"
+                        }
+                    `}
+                >
+
+                    {/* MOBILE MENU BUTTON */}
+
+                    <button
+                        className={`
                             md:hidden
+
                             p-2
                             -ml-2
-                            text-slate-500
-                            hover:text-slate-700
-                            transition-colors
-                        "
-            onClick={() =>
-              setIsMobileMenuOpen(true)
-            }
-          >
-            <MenuIcon className="size-6" />
-          </button>
 
-          {/* PAGE TITLE */}
+                            transition-colors duration-300
 
-          <div className="min-w-0">
+                            ${
+                                theme === "light"
 
-            <h1
-              className="
-                                text-slate-900
+                                    ? "text-slate-500 hover:text-slate-700"
+
+                                    : "text-slate-400 hover:text-white"
+                            }
+                        `}
+                        onClick={() =>
+                            setIsMobileMenuOpen(true)
+                        }
+                    >
+                        <MenuIcon className="size-6" />
+                    </button>
+
+                    {/* PAGE TITLE */}
+
+                    <div className="min-w-0">
+
+                        <h1
+                            className={`
                                 truncate
-                            "
-            >
-              {title}
-            </h1>
 
-            <p
-              className="
-                                text-sm text-slate-400
+                                ${
+                                    theme === "light"
+                                        ? "text-slate-900"
+                                        : "text-white"
+                                }
+                            `}
+                        >
+                            {title}
+                        </h1>
+
+                        <p
+                            className={`
+                                text-sm
                                 hidden sm:block
-                            "
-            >
-              Manage and automate your social presence
-            </p>
-          </div>
-        </header>
 
-        {/* OUTLET SCROLL AREA */}
+                                ${
+                                    theme === "light"
+                                        ? "text-slate-400"
+                                        : "text-slate-500"
+                                }
+                            `}
+                        >
+                            Manage and automate your social presence
+                        </p>
+                    </div>
+                </header>
 
-        <main
-          style={{ overflow: "auto" }}
-          className="
+                {/* OUTLET */}
+
+                <main
+                    className={`
                         flex-1
                         overflow-y-auto
+
                         p-4
                         sm:p-6
                         md:p-8
                         xl:p-12
+
                         relative
-                    "
-        >
-          <Outlet />
-        </main>
-      </div>
-    </div>
-  );
+
+                        transition-colors duration-300
+
+                        ${
+                            theme === "light"
+                                ? "bg-slate-50"
+                                : "bg-[#0a0a0a]"
+                        }
+                    `}
+                >
+                    <Outlet />
+                </main>
+            </div>
+        </div>
+    );
 };
 
 export default Layout;

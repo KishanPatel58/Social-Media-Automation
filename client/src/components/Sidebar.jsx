@@ -1,158 +1,192 @@
 import {
-  CalendarDaysIcon,
-  LayoutDashboardIcon,
-  LogOut,
-  UsersIcon,
-  Wand2Icon,
+    CalendarDaysIcon,
+    LayoutDashboardIcon,
+    LogOut,
+    Moon,
+    Sun,
+    UsersIcon,
+    Wand2Icon,
 } from "lucide-react";
 
-import React from "react";
+import { useContext } from "react";
 
 import {
-  NavLink,
-  useLocation,
-  useNavigate,
+    NavLink,
+    useLocation,
+    useNavigate,
 } from "react-router-dom";
+
+import { themeContext } from "../context/theme/ThemeContext";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const { logout, user } = {
-    logout: () => {
-      window.location.href = "/";
-    },
+    const { theme, setTheme } =
+        useContext(themeContext);
 
-    user: {
-      name: "Kishan Patel",
-      email: "patelkishan@gmail.com",
-    },
-  };
+    const { logout, user } = {
 
-  const location = useLocation();
+        logout: () => {
+            window.location.href = "/";
+        },
 
-  const navlinks = [
-    {
-      name: "Dashboard",
-      to: "/dashboard",
-      icon: LayoutDashboardIcon,
-    },
-    {
-      name: "Accounts",
-      to: "/accounts",
-      icon: UsersIcon,
-    },
-    {
-      name: "Scheduler",
-      to: "/schedule",
-      icon: CalendarDaysIcon,
-    },
-    {
-      name: "AI Composer",
-      to: "/ai-composer",
-      icon: Wand2Icon,
-    },
-  ];
+        user: {
+            name: "Kishan Patel",
+            email: "patelkishan@gmail.com",
+        },
+    };
 
-  return (
+    const location = useLocation();
 
-    <aside
-      className={`
-        fixed md:relative
-        inset-y-0 left-0
-        z-50
+    const navlinks = [
+        {
+            name: "Dashboard",
+            to: "/dashboard",
+            icon: LayoutDashboardIcon,
+        },
+        {
+            name: "Accounts",
+            to: "/accounts",
+            icon: UsersIcon,
+        },
+        {
+            name: "Scheduler",
+            to: "/schedule",
+            icon: CalendarDaysIcon,
+        },
+        {
+            name: "AI Composer",
+            to: "/ai-composer",
+            icon: Wand2Icon,
+        },
+    ];
 
-        w-64 shrink-0
+    const themeHandle = () => {
 
-        bg-white
-        border-r border-slate-200
+        setTheme(
+            theme === "light"
+                ? "dark"
+                : "light"
+        );
+    };
 
-        flex flex-col
+    return (
 
-        transition-transform duration-300 ease-in-out
+        <aside
+            className={`
+                fixed md:relative
+                inset-y-0 left-0
+                z-50
 
-        ${isOpen
-          ? "translate-x-0 pointer-events-auto"
-          : "-translate-x-full md:translate-x-0 pointer-events-none md:pointer-events-auto"
-        }
-    `}
-    >
+                w-64 shrink-0
 
-      {/* LOGO */}
+                ${
+                    theme === "light"
+                        ? "bg-white border-slate-200"
+                        : "bg-[#0f0f10] border-[#ffffff15]"
+                }
 
-      <div
-        onClick={() => navigate("/")}
-        className="
+                border-r
+
+                flex flex-col
+
+                transition-all duration-300 ease-in-out
+
+                ${
+                    isOpen
+                        ? "translate-x-0 pointer-events-auto"
+                        : "-translate-x-full md:translate-x-0 pointer-events-none md:pointer-events-auto"
+                }
+            `}
+        >
+
+            {/* LOGO */}
+
+            <div
+                onClick={() => navigate("/")}
+                className="
                     p-6 pb-4
                     cursor-pointer
                     shrink-0
                 "
-      >
+            >
 
-        <div
-          className="
+                <div
+                    className={`
                         text-xl
                         tracking-tight
-                        text-slate-800
+
                         flex items-center gap-1.5
-                    "
-        >
 
-          <img
-            src="/logo.svg"
-            alt="logo"
-            className="size-6"
-          />
+                        ${
+                            theme === "light"
+                                ? "text-slate-800"
+                                : "text-white"
+                        }
+                    `}
+                >
 
-          <span>
-            Scheduler
-          </span>
-        </div>
-      </div>
+                    <img
+                        src="/logo.svg"
+                        alt="logo"
+                        className="size-6"
+                    />
 
-      {/* NAV TITLE */}
+                    <span>
+                        Scheduler
+                    </span>
+                </div>
+            </div>
 
-      <div className="px-6 py-2 shrink-0">
+            {/* NAV TITLE */}
 
-        <span
-          className="
+            <div className="px-6 py-2 shrink-0">
+
+                <span
+                    className={`
                         text-xs
-                        text-slate-500
                         uppercase
                         tracking-wider
-                    "
-        >
-          Menu
-        </span>
-      </div>
 
-      {/* NAV LINKS */}
+                        ${
+                            theme === "light"
+                                ? "text-slate-500"
+                                : "text-slate-400"
+                        }
+                    `}
+                >
+                    Menu
+                </span>
+            </div>
 
-      <nav
-        className="
+            {/* NAV LINKS */}
+
+            <nav
+                className="
                     flex-1
                     px-3
                     space-y-1
                     overflow-y-auto
                 "
-      >
+            >
 
-        {
-          navlinks.map((link, idx) => {
+                {
+                    navlinks.map((link, idx) => {
 
-            const isActive =
-              location.pathname === link.to;
+                        const isActive =
+                            location.pathname === link.to;
 
-            return (
+                        return (
 
-              <NavLink
-                key={idx}
-                to={link.to}
-                end={link.to === "/dashboard"}
-                onClick={() =>
-                  setIsOpen(false)
-                }
-                className={`
+                            <NavLink
+                                key={idx}
+                                to={link.to}
+                                end={link.to === "/dashboard"}
+                                onClick={() =>
+                                    setIsOpen(false)
+                                }
+                                className={`
                                     flex items-center gap-3
 
                                     px-3 py-2.5
@@ -164,77 +198,100 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                                     border
 
-                                    ${isActive
+                                    ${
+                                        isActive
 
-                    ? "bg-red-50 text-red-600 border-red-100"
+                                            ? "bg-red-500 text-white border-red-500"
 
-                    : "text-slate-500 hover:bg-slate-50 border-transparent hover:text-slate-700"
-                  }
+                                            : theme === "light"
+
+                                                ? "text-slate-500 hover:bg-slate-50 border-transparent hover:text-slate-700"
+
+                                                : "text-slate-400 hover:bg-[#ffffff08] border-transparent hover:text-white"
+                                    }
                                 `}
-              >
+                            >
 
-                <link.icon
-                  className={`
+                                <link.icon
+                                    className={`
                                         size-[18px]
                                         shrink-0
 
-                                        ${isActive
-                      ? "text-red-500"
-                      : "text-slate-500"
-                    }
+                                        ${
+                                            isActive
+
+                                                ? "text-white"
+
+                                                : theme === "light"
+
+                                                    ? "text-slate-500"
+
+                                                    : "text-slate-400"
+                                        }
                                     `}
-                />
+                                />
 
-                <span>
-                  {link.name}
-                </span>
+                                <span>
+                                    {link.name}
+                                </span>
 
-                {
-                  isActive && (
-                    <span
-                      className="
+                                {
+                                    isActive && (
+                                        <span
+                                            className="
                                                 ml-auto
                                                 w-[5px]
                                                 h-5
                                                 rounded-full
-                                                bg-red-500
+                                                bg-white
                                             "
-                    />
-                  )
+                                        />
+                                    )
+                                }
+                            </NavLink>
+                        );
+                    })
                 }
-              </NavLink>
-            );
-          })
-        }
-      </nav>
+            </nav>
 
-      {/* USER FOOTER */}
+            {/* FOOTER */}
 
-      <div
-        className="
+            <div
+                className={`
                     p-4
-                    border-t border-slate-100
+                    border-t
                     shrink-0
-                "
-      >
 
-        {/* USER CARD */}
+                    ${
+                        theme === "light"
+                            ? "border-slate-100"
+                            : "border-[#ffffff10]"
+                    }
+                `}
+            >
 
-        <div
-          className="
+                {/* USER CARD */}
+
+                <div
+                    className={`
                         flex items-center gap-3
                         p-2
                         rounded-xl
 
-                        hover:bg-slate-50
                         transition-colors
-                    "
-        >
 
-          {/* AVATAR */}
+                        ${
+                            theme === "light"
+                                ? "hover:bg-slate-50"
+                                : "hover:bg-[#ffffff08]"
+                        }
+                    `}
+                >
 
-          <div
-            className="
+                    {/* AVATAR */}
+
+                    <div
+                        className="
                             size-8
                             rounded-full
 
@@ -250,45 +307,85 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                             shrink-0
                         "
-          >
-            {
-              user?.name
-                ?.charAt(0)
-                .toUpperCase() || "U"
-            }
-          </div>
+                    >
+                        {
+                            user?.name
+                                ?.charAt(0)
+                                .toUpperCase() || "U"
+                        }
+                    </div>
 
-          {/* USER INFO */}
+                    {/* USER INFO */}
 
-          <div className="flex-1 min-w-0">
+                    <div className="flex-1 min-w-0">
 
-            <div
-              className="
+                        <div
+                            className={`
                                 text-sm
-                                text-slate-800
                                 truncate
-                            "
-            >
-              {user?.name}
-            </div>
 
-            <div
-              className="
+                                ${
+                                    theme === "light"
+                                        ? "text-slate-800"
+                                        : "text-white"
+                                }
+                            `}
+                        >
+                            {user?.name}
+                        </div>
+
+                        <div
+                            className={`
                                 text-xs
-                                text-slate-400
                                 truncate
-                            "
-            >
-              {user?.email}
-            </div>
-          </div>
-        </div>
 
-        {/* LOGOUT */}
+                                ${
+                                    theme === "light"
+                                        ? "text-slate-400"
+                                        : "text-slate-500"
+                                }
+                            `}
+                        >
+                            {user?.email}
+                        </div>
+                    </div>
 
-        <button
-          onClick={logout}
-          className="
+                    {/* THEME BUTTON */}
+
+                    <button
+                        onClick={themeHandle}
+                        className={`
+                            border
+                            p-2.5
+                            rounded-lg
+
+                            transition-all duration-300
+
+                            ${
+                                theme === "dark"
+
+                                    ? "border-[#ffffff20] text-white hover:bg-[#ffffff10]"
+
+                                    : "border-slate-300 text-black hover:bg-slate-100"
+                            }
+                        `}
+                    >
+
+                        {
+                            theme === "dark"
+
+                                ? <Sun className="size-4" />
+
+                                : <Moon className="size-4" />
+                        }
+                    </button>
+                </div>
+
+                {/* LOGOUT */}
+
+                <button
+                    onClick={logout}
+                    className={`
                         mt-2
 
                         flex items-center gap-2
@@ -300,24 +397,28 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                         rounded-xl
 
                         text-sm
-                        text-slate-500
-
-                        hover:bg-red-50
-                        hover:text-red-500
 
                         transition-all duration-150
-                    "
-        >
 
-          <LogOut className="size-4" />
+                        ${
+                            theme === "light"
 
-          <span>
-            Sign Out
-          </span>
-        </button>
-      </div>
-    </aside>
-  );
+                                ? "text-slate-500 hover:bg-red-50 hover:text-red-500"
+
+                                : "text-slate-400 hover:bg-red-500/10 hover:text-red-400"
+                        }
+                    `}
+                >
+
+                    <LogOut className="size-4" />
+
+                    <span>
+                        Sign Out
+                    </span>
+                </button>
+            </div>
+        </aside>
+    );
 };
 
 export default Sidebar;

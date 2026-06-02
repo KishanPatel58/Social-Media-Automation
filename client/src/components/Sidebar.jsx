@@ -7,9 +7,9 @@ import {
     UsersIcon,
     Wand2Icon,
 } from "lucide-react";
-
+const { VITE_AI_COMPOSER_FEATURE_ENABLED } = import.meta.env;
 import { useContext } from "react";
-
+import {toast} from "react-hot-toast"
 import {
     NavLink,
     useLocation,
@@ -19,7 +19,7 @@ import {
 import { themeContext } from "../context/theme/ThemeContext";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-
+    const condetion = VITE_AI_COMPOSER_FEATURE_ENABLED === "true"
     const navigate = useNavigate();
 
     const { theme, setTheme } =
@@ -183,9 +183,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 key={idx}
                                 to={link.to}
                                 end={link.to === "/dashboard"}
-                                onClick={() =>
+                                onClick={() =>{
                                     setIsOpen(false)
-                                }
+                                    if(link.to === "/ai-composer"){
+                                        toast.error("This feature is under development.")
+                                    }
+                                }}
                                 className={`
                                     flex items-center gap-3
 

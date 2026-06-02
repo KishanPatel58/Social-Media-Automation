@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/user.routes");
 const socialAuthRouter = require("./routes/socialauth.routes");
+const accountRouter = require("./routes/accounts.routes");
 const app = express();
 
 // Middlewares 
@@ -21,5 +22,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", userRouter);
 // social routes
 app.use("/api/oauth", socialAuthRouter);
+// account router
+app.use("/api/accounts",accountRouter)
 
 module.exports = app;

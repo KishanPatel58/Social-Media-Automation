@@ -19,7 +19,6 @@ const ServiceNotAvailable = ({
       className={`
         min-h-full
         w-full
-
         flex items-center
         justify-center
         select-none

@@ -23,7 +23,8 @@ import {
 import { themeContext } from "../context/theme/ThemeContext";
 
 const AIComposer = () => {
-
+  
+  
   const { theme } =
     useContext(themeContext);
 
@@ -116,11 +117,11 @@ const AIComposer = () => {
     "Minimalist",
     "Excited",
   ];
+ 
 
   return (
-
-    <div
-      className="
+     <div
+        className="
         max-w-4xl
         mx-auto
 
@@ -130,53 +131,52 @@ const AIComposer = () => {
         animate-in fade-in
         duration-700
       "
-    >
+      >
 
-      {/* INPUT */}
+        {/* INPUT */}
 
-      <div
-        className="
+        <div
+          className="
           space-y-6
           text-center
           mt-20
         "
-      >
+        >
 
-        <h1
-          className={`
+          <h1
+            className={`
             text-3xl
             tracking-tight
 
-            ${
-              theme === "light"
+            ${theme === "light"
                 ? "text-slate-700"
                 : "text-white"
-            }
+              }
           `}
-        >
-          What should we create today ?
-        </h1>
+          >
+            What should we create today ?
+          </h1>
 
-        {/* TEXTAREA */}
+          {/* TEXTAREA */}
 
-        <div
-          className="
+          <div
+            className="
             relative
             group
             mt-12
           "
-        >
+          >
 
-          <textarea
-            rows={10}
-            value={prompt}
-            onChange={(e) =>
-              setPrompt(
-                e.target.value
-              )
-            }
-            placeholder="Share your idea.. (e.g. A post about the launch of our new eco-friendly coffee beans)"
-            className={`
+            <textarea
+              rows={10}
+              value={prompt}
+              onChange={(e) =>
+                setPrompt(
+                  e.target.value
+                )
+              }
+              placeholder="Share your idea.. (e.g. A post about the launch of our new eco-friendly coffee beans)"
+              className={`
               w-full
 
               p-6
@@ -191,20 +191,19 @@ const AIComposer = () => {
 
               transition-all duration-300
 
-              ${
-                theme === "light"
+              ${theme === "light"
 
                   ? "bg-white border-slate-300 text-slate-900 placeholder-slate-400 focus:border-slate-400"
 
                   : "bg-[#111111] border-[#ffffff10] text-white placeholder-slate-500 focus:border-[#ffffff25]"
-              }
+                }
             `}
-          />
+            />
 
-          {/* ACTIONS */}
+            {/* ACTIONS */}
 
-          <div
-            className="
+            <div
+              className="
               absolute
               bottom-4 right-2.5
 
@@ -213,17 +212,17 @@ const AIComposer = () => {
 
               text-sm
             "
-          >
+            >
 
-            {/* TOGGLE */}
+              {/* TOGGLE */}
 
-            <button
-              onClick={() =>
-                setGenerateImage(
-                  !generateImage
-                )
-              }
-              className={`
+              <button
+                onClick={() =>
+                  setGenerateImage(
+                    !generateImage
+                  )
+                }
+                className={`
                 flex items-center
                 gap-3
 
@@ -231,32 +230,30 @@ const AIComposer = () => {
 
                 rounded-lg
 
-                ${
-                  theme === "light"
+                ${theme === "light"
 
                     ? "bg-red-50"
 
                     : "bg-[#1a1a1a]"
-                }
+                  }
               `}
-            >
+              >
 
-              <span
-                className={`
-                  ${
-                    theme === "light"
+                <span
+                  className={`
+                  ${theme === "light"
 
                       ? "text-slate-700"
 
                       : "text-slate-300"
-                  }
+                    }
                 `}
-              >
-                AI Image
-              </span>
+                >
+                  AI Image
+                </span>
 
-              <div
-                className={`
+                <div
+                  className={`
                   relative
                   inline-flex
 
@@ -266,20 +263,19 @@ const AIComposer = () => {
 
                   transition-colors duration-200
 
-                  ${
-                    generateImage
+                  ${generateImage
                       ? "bg-red-500"
                       : theme === "light"
 
                         ? "bg-slate-200"
 
                         : "bg-[#333]"
-                  }
+                    }
                 `}
-              >
+                >
 
-                <span
-                  className={`
+                  <span
+                    className={`
                     pointer-events-none
 
                     size-4
@@ -292,24 +288,23 @@ const AIComposer = () => {
 
                     transition
 
-                    ${
-                      generateImage
+                    ${generateImage
                         ? "translate-x-4.5"
                         : "translate-x-0.5"
-                    }
+                      }
                   `}
-                />
-              </div>
-            </button>
+                  />
+                </div>
+              </button>
 
-            {/* GENERATE */}
+              {/* GENERATE */}
 
-            <button
-              disabled={loading}
-              onClick={() =>
-                handleGenerate()
-              }
-              className={`
+              <button
+                disabled={loading}
+                onClick={() =>
+                  handleGenerate()
+                }
+                className={`
                 flex items-center
                 gap-2
 
@@ -319,67 +314,66 @@ const AIComposer = () => {
 
                 transition-all
 
-                ${
-                  theme === "light"
+                ${theme === "light"
 
                     ? "bg-slate-900 hover:bg-slate-800 text-white"
 
                     : "bg-white hover:bg-slate-200 text-black"
-                }
+                  }
               `}
-            >
+              >
 
-              {
-                loading
+                {
+                  loading
 
-                  ? (
-                    <>
-                      <Loader2Icon
-                        className="
+                    ? (
+                      <>
+                        <Loader2Icon
+                          className="
                           size-4
                           animate-spin
                         "
-                      />
+                        />
 
-                      <span>
-                        Generating...
-                      </span>
-                    </>
-                  )
+                        <span>
+                          Generating...
+                        </span>
+                      </>
+                    )
 
-                  : (
-                    <>
-                      Generate
+                    : (
+                      <>
+                        Generate
 
-                      <ArrowRightIcon
-                        className="size-4"
-                      />
-                    </>
-                  )
-              }
-            </button>
+                        <ArrowRightIcon
+                          className="size-4"
+                        />
+                      </>
+                    )
+                }
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* TONES */}
+          {/* TONES */}
 
-        <div
-          className="
+          <div
+            className="
             flex flex-wrap
             justify-center
             gap-2
           "
-        >
+          >
 
-          {
-            tones.map((tones, idx) => (
+            {
+              tones.map((tones, idx) => (
 
-              <button
-                key={idx}
-                onClick={() =>
-                  setTone(tones)
-                }
-                className={`
+                <button
+                  key={idx}
+                  onClick={() =>
+                    setTone(tones)
+                  }
+                  className={`
                   px-4 py-1.5
 
                   rounded-full
@@ -389,8 +383,7 @@ const AIComposer = () => {
 
                   transition-all
 
-                  ${
-                    tone === tones
+                  ${tone === tones
 
                       ? "bg-red-500 border-red-500 text-white"
 
@@ -399,98 +392,95 @@ const AIComposer = () => {
                         ? "bg-white border-slate-200 text-slate-500 hover:border-slate-300"
 
                         : "bg-[#111111] border-[#ffffff10] text-slate-400 hover:border-[#ffffff25]"
-                  }
+                    }
                 `}
-              >
-                {tones}
-              </button>
-            ))
-          }
+                >
+                  {tones}
+                </button>
+              ))
+            }
+          </div>
         </div>
-      </div>
 
-      {/* GENERATIONS */}
+        {/* GENERATIONS */}
 
-      <div
-        className={`
+        <div
+          className={`
           space-y-6
           pt-12
           border-t
 
-          ${
-            theme === "light"
+          ${theme === "light"
               ? "border-slate-100"
               : "border-[#ffffff10]"
-          }
-        `}
-      >
-
-        <div
-          className={`
-            flex items-center
-            justify-between
-
-            ${
-              theme === "light"
-                ? "text-slate-600"
-                : "text-slate-300"
             }
-          `}
+        `}
         >
 
           <div
-            className="
+            className={`
+            flex items-center
+            justify-between
+
+            ${theme === "light"
+                ? "text-slate-600"
+                : "text-slate-300"
+              }
+          `}
+          >
+
+            <div
+              className="
               flex items-center
               gap-2
             "
-          >
+            >
 
-            <HistoryIcon
-              className="size-5"
-            />
+              <HistoryIcon
+                className="size-5"
+              />
 
-            <h2 className="text-xl">
-              Recent Generations
-            </h2>
-          </div>
+              <h2 className="text-xl">
+                Recent Generations
+              </h2>
+            </div>
 
-          <span
-            className={`
+            <span
+              className={`
               text-sm
               px-2
 
-              ${
-                theme === "light"
+              ${theme === "light"
 
                   ? "text-slate-500 bg-slate-50"
 
                   : "text-slate-400 bg-[#1a1a1a]"
-              }
+                }
             `}
-          >
-            {generations.length} total
-          </span>
-        </div>
+            >
+              {generations.length} total
+            </span>
+          </div>
 
-        {/* CARDS */}
+          {/* CARDS */}
 
-        <div
-          className="
+          <div
+            className="
             grid
             grid-cols-1
             md:grid-cols-2
             xl:grid-cols-3
             gap-6
           "
-        >
+          >
 
-          {
-            generations.map(
-              (generation, idx) => (
+            {
+              generations.map(
+                (generation, idx) => (
 
-                <div
-                  key={idx}
-                  className={`
+                  <div
+                    key={idx}
+                    className={`
                     group
 
                     rounded-2xl
@@ -500,55 +490,53 @@ const AIComposer = () => {
 
                     transition-all
 
-                    ${
-                      theme === "light"
+                    ${theme === "light"
 
                         ? "bg-white border-slate-100 hover:border-red-200"
 
                         : "bg-[#111111] border-[#ffffff10] hover:border-red-500/30"
-                    }
+                      }
                   `}
-                >
-
-                  <div
-                    className="
-                      flex flex-col
-                      h-full
-                      space-y-4
-                    "
                   >
 
                     <div
                       className="
+                      flex flex-col
+                      h-full
+                      space-y-4
+                    "
+                    >
+
+                      <div
+                        className="
                         flex items-center
                         justify-between
                       "
-                    >
+                      >
 
-                      <span
-                        className={`
+                        <span
+                          className={`
                           text-xs
                           uppercase
                           tracking-widest
 
-                          ${
-                            theme === "light"
+                          ${theme === "light"
 
                               ? "text-slate-400"
 
                               : "text-slate-500"
-                          }
+                            }
                         `}
-                      >
-                        {
-                          new Date(
-                            generation.createdAt
-                          ).toLocaleString()
-                        }
-                      </span>
+                        >
+                          {
+                            new Date(
+                              generation.createdAt
+                            ).toLocaleString()
+                          }
+                        </span>
 
-                      <span
-                        className="
+                        <span
+                          className="
                           text-xs
 
                           text-red-500
@@ -558,13 +546,13 @@ const AIComposer = () => {
 
                           rounded-md
                         "
-                      >
-                        {generation.tone}
-                      </span>
-                    </div>
+                        >
+                          {generation.tone}
+                        </span>
+                      </div>
 
-                    <p
-                      className={`
+                      <p
+                        className={`
                         text-sm
                         leading-relaxed
 
@@ -572,43 +560,41 @@ const AIComposer = () => {
 
                         flex-1
 
-                        ${
-                          theme === "light"
+                        ${theme === "light"
 
                             ? "text-slate-600"
 
                             : "text-slate-300"
-                        }
+                          }
                       `}
-                    >
-                      {generation.content}
-                    </p>
+                      >
+                        {generation.content}
+                      </p>
 
-                    {
-                      generation.mediaUrl && (
+                      {
+                        generation.mediaUrl && (
 
-                        <div
-                          className={`
+                          <div
+                            className={`
                             rounded-xl
                             border
                             overflow-hidden
 
-                            ${
-                              theme === "light"
+                            ${theme === "light"
 
                                 ? "border-slate-50 bg-slate-50"
 
                                 : "border-[#ffffff10] bg-[#1a1a1a]"
-                            }
+                              }
                           `}
-                        >
+                          >
 
-                          <img
-                            src={
-                              generation.mediaUrl
-                            }
-                            alt="gen"
-                            className="
+                            <img
+                              src={
+                                generation.mediaUrl
+                              }
+                              alt="gen"
+                              className="
                               w-full
                               aspect-video
                               object-cover
@@ -618,26 +604,26 @@ const AIComposer = () => {
 
                               transition-opacity
                             "
-                          />
-                        </div>
-                      )
-                    }
+                            />
+                          </div>
+                        )
+                      }
 
-                    <div
-                      className="
+                      <div
+                        className="
                         flex items-center
                         gap-2
                         pt-2
                       "
-                    >
+                      >
 
-                      <button
-                        onClick={() =>
-                          setActiveScheduler(
-                            generation
-                          )
-                        }
-                        className={`
+                        <button
+                          onClick={() =>
+                            setActiveScheduler(
+                              generation
+                            )
+                          }
+                          className={`
                           flex-1
 
                           text-xs
@@ -648,31 +634,30 @@ const AIComposer = () => {
 
                           transition-all
 
-                          ${
-                            theme === "light"
+                          ${theme === "light"
 
                               ? "bg-slate-100 hover:bg-red-500 hover:text-white text-slate-600"
 
                               : "bg-[#1a1a1a] hover:bg-red-500 hover:text-white text-slate-300"
-                          }
+                            }
                         `}
-                      >
-                        Schedule Post
-                      </button>
+                        >
+                          Schedule Post
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )
               )
-            )
-          }
+            }
 
-          {/* EMPTY */}
+            {/* EMPTY */}
 
-          {
-            generations.length === 0 && (
+            {
+              generations.length === 0 && (
 
-              <div
-                className="
+                <div
+                  className="
                   col-span-full
 
                   py-20
@@ -680,10 +665,10 @@ const AIComposer = () => {
 
                   space-y-2
                 "
-              >
+                >
 
-                <div
-                  className={`
+                  <div
+                    className={`
                     size-12
                     rounded-2xl
 
@@ -691,49 +676,47 @@ const AIComposer = () => {
 
                     mx-auto
 
-                    ${
-                      theme === "light"
+                    ${theme === "light"
 
                         ? "bg-slate-50 text-slate-300"
 
                         : "bg-[#1a1a1a] text-slate-600"
-                    }
+                      }
                   `}
-                >
+                  >
 
-                  <Wand2Icon
-                    className="size-6"
-                  />
-                </div>
+                    <Wand2Icon
+                      className="size-6"
+                    />
+                  </div>
 
-                <p
-                  className={`
+                  <p
+                    className={`
                     text-sm
 
-                    ${
-                      theme === "light"
+                    ${theme === "light"
 
                         ? "text-slate-400"
 
                         : "text-slate-500"
-                    }
+                      }
                   `}
-                >
-                  No content generated yet.
-                </p>
-              </div>
-            )
-          }
+                  >
+                    No content generated yet.
+                  </p>
+                </div>
+              )
+            }
+          </div>
         </div>
-      </div>
 
-      {/* MODAL */}
+        {/* MODAL */}
 
-      {
-        activeScheduler && (
+        {
+          activeScheduler && (
 
-          <div
-            className="
+            <div
+              className="
               fixed inset-0
 
               min-h-screen
@@ -747,10 +730,10 @@ const AIComposer = () => {
               bg-black/60
               backdrop-blur-md
             "
-          >
+            >
 
-            <div
-              className={`
+              <div
+                className={`
                 w-full
                 max-w-2xl
 
@@ -764,20 +747,19 @@ const AIComposer = () => {
 
                 border
 
-                ${
-                  theme === "light"
+                ${theme === "light"
 
                     ? "bg-white border-slate-100"
 
                     : "bg-[#111111] border-[#ffffff10]"
-                }
+                  }
               `}
-            >
+              >
 
-              {/* HEADER */}
+                {/* HEADER */}
 
-              <div
-                className={`
+                <div
+                  className={`
                   flex items-center
                   justify-between
 
@@ -785,113 +767,108 @@ const AIComposer = () => {
 
                   border-b
 
-                  ${
-                    theme === "light"
+                  ${theme === "light"
 
                       ? "border-slate-100 bg-slate-50/30"
 
                       : "border-[#ffffff10] bg-[#1a1a1a]"
-                  }
+                    }
                 `}
-              >
+                >
 
-                <h3
-                  className={`
-                    ${
-                      theme === "light"
+                  <h3
+                    className={`
+                    ${theme === "light"
                         ? "text-slate-900"
                         : "text-white"
-                    }
+                      }
                   `}
-                >
-                  Schedule Generation
-                </h3>
+                  >
+                    Schedule Generation
+                  </h3>
 
-                <button
-                  onClick={() =>
-                    setActiveScheduler(
-                      null
-                    )
-                  }
-                  className={`
+                  <button
+                    onClick={() =>
+                      setActiveScheduler(
+                        null
+                      )
+                    }
+                    className={`
                     p-2
                     rounded-full
 
                     transition-colors
 
-                    ${
-                      theme === "light"
+                    ${theme === "light"
 
                         ? "hover:bg-slate-100 text-slate-400"
 
                         : "hover:bg-[#222] text-slate-500"
-                    }
+                      }
                   `}
-                >
+                  >
 
-                  <XIcon
-                    className="size-5"
-                  />
-                </button>
-              </div>
+                    <XIcon
+                      className="size-5"
+                    />
+                  </button>
+                </div>
 
-              {/* BODY */}
+                {/* BODY */}
 
-              <div
-                className="
+                <div
+                  className="
                   flex-1
                   overflow-y-auto
 
                   p-8
                   space-y-4
                 "
-              >
+                >
 
-                <div
-                  className={`
+                  <div
+                    className={`
                     rounded-2xl
 
                     p-6
 
                     border
 
-                    ${
-                      theme === "light"
+                    ${theme === "light"
 
                         ? "bg-slate-50 border-slate-100"
 
                         : "bg-[#1a1a1a] border-[#ffffff10]"
-                    }
+                      }
                   `}
-                >
+                  >
 
-                  <p
-                    className={`
+                    <p
+                      className={`
                       text-sm
                       leading-relaxed
                       whitespace-pre-wrap
 
-                      ${
-                        theme === "light"
+                      ${theme === "light"
 
                           ? "text-slate-800"
 
                           : "text-slate-300"
-                      }
+                        }
                     `}
-                  >
-                    {
-                      activeScheduler.prompt
-                    }
-                  </p>
+                    >
+                      {
+                        activeScheduler.prompt
+                      }
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )
-      }
-    </div>
+          )
+        }
+      </div>
   );
-};
-
+  
+}
 export default AIComposer;

@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const userRouter = require("./routes/user.routes");
 const socialAuthRouter = require("./routes/socialauth.routes");
 const accountRouter = require("./routes/accounts.routes");
+const postRouter = require("./routes/post.routes");
 const app = express();
 
 // Middlewares 
@@ -24,5 +25,7 @@ app.use("/api/auth", userRouter);
 app.use("/api/oauth", socialAuthRouter);
 // account router
 app.use("/api/accounts",accountRouter)
+// post router
+app.use("/api/posts",postRouter)
 
 module.exports = app;

@@ -13,6 +13,7 @@
   "type": "commonjs",
   "dependencies": {
     "@google/genai": "^2.7.0",
+    "@imagekit/nodejs": "^7.6.3",
     "@zernio/node": "^0.2.194",
     "axios": "^1.16.1",
     "bcryptjs": "^3.0.3",

@@ -6,6 +6,7 @@ const userRouter = require("./routes/user.routes");
 const socialAuthRouter = require("./routes/socialauth.routes");
 const accountRouter = require("./routes/accounts.routes");
 const postRouter = require("./routes/post.routes");
+const activityRouter = require("./routes/activity.routes");
 const app = express();
 
 // Middlewares 
@@ -27,5 +28,7 @@ app.use("/api/oauth", socialAuthRouter);
 app.use("/api/accounts",accountRouter)
 // post router
 app.use("/api/posts",postRouter)
+// activity router
+app.use("/api/activity",activityRouter)
 
 module.exports = app;

@@ -2,13 +2,12 @@ const { GoogleGenAI } =
     require("@google/genai");
 
 const generateAndUploadImage =
-    require("../utils/uploadImage");
+    require("../services/generateAndUploadImage");
 
 const generationModel =
     require("../models/generation.model");
 
-const ENV =
-    require("../config/env.config");
+const ENV = require("../config/environments/env");
 const postModel = require("../models/post.model");
 const imageKit = require("../config/imagekit/imagekit.config");
 
@@ -214,25 +213,20 @@ const schedulePost = async (req, res) => {
                 parsedPlatforms = platforms.split(",")
             }
         }
+        const fs = require("fs");
+
         let mediaUrl = req.body.mediaUrl;
         let mediaType = req.body.mediaType;
+
         if (req.file) {
-            const result = await new Promise((resolve, reject) => {
-                const response = imageKit.upload({
-                    file: req.body.file,
-                    fileName: req.body.file.originalName
-                })
-                if (!response) {
-                    reject("Problem to upload File.")
-                } else {
-                    resolve(response.url)
-                }
-            })
+            const result = await imageKit.upload({
+                file: fs.readFileSync(req.file.path),
+                fileName: req.file.originalname,
+            });
 
-
+            mediaUrl = result.url;
         }
-        mediaUrl = result;
-        mediaType = req.file.startsWith("/images") ? "image0" : "video";
+        mediaType = req.file.startsWith("/images") ? "image" : "video";
         const post = await postModel.create({
             user: req.user._id,
             content,

@@ -32,18 +32,16 @@ const registerUser = async (req, res) => {
             name, email, password: hashedPassword
         })
         const token = generateToken(newUser._id);
-        res.cookie("token", token, {
-            secure: ENV.PRODUCT_ON === "production",
-            samesite: 'lax'
-        })
+
         res.status(201).json({
             message: "User Registered Successfully.",
+            token,
             user: {
                 id: newUser._id,
                 name: newUser.name,
                 email: newUser.email
             }
-        })
+        });
     } catch (error) {
         return res.status(500).json({ message: `Error: ${error.message}` })
     }
@@ -57,31 +55,28 @@ const loginUser = async (req, res) => {
                 message: "All fields are required."
             })
         }
-        let user = await userModel.findOne({email}).select("+password");
-        if(!user){
+        let user = await userModel.findOne({ email }).select("+password");
+        if (!user) {
             return res.status(400).json({
                 message: "Invalid email or password"
             })
         }
-        const isMatch = await comparePassword(password,user.password);
-        if(!isMatch){
+        const isMatch = await comparePassword(password, user.password);
+        if (!isMatch) {
             return res.status(400).json({
                 message: "Invalid email or password"
             })
         }
         const token = generateToken(user._id);
-        res.cookie("token", token, {
-            secure: ENV.PRODUCT_ON === "production",
-            samesite: 'lax'
-        })
         return res.status(200).json({
             message: "User Loggedin Successfully.",
-            user:{
+            token,
+            user: {
                 id: user._id,
                 name: user.name,
                 email: user.email
             }
-        })
+        });
     } catch (error) {
         return res.status(500).json({ message: `Error: ${error.message}` })
     }

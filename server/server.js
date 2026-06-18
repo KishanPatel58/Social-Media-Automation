@@ -5,8 +5,16 @@ const connectDB = require("./src/config/database/db");
 const { initScheduler } = require("./src/services/schedule.service");
 const PORT = env.PORT;
 
-connectDB()
-// initialized scheduler.
-initScheduler()
+const startServer = async () => {
+  try {
+    await connectDB();
 
-server.listen(PORT, ()=>console.log(`Server is Running on PORT: ${PORT}`))
+    initScheduler();
+
+    server.listen(PORT);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+startServer();

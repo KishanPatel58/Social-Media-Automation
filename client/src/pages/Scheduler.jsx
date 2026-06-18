@@ -5,8 +5,7 @@ import {
 } from "react";
 
 import {
-  dummyPostsData,
-  PLATFORMS,
+  PLATFORMS
 } from "../assets/assets";
 
 import {
@@ -19,6 +18,8 @@ import {
 } from "lucide-react";
 
 import { themeContext } from "../context/theme/ThemeContext";
+import api from "../api/axios";
+import { toast } from "react-hot-toast";
 
 const Scheduler = () => {
 
@@ -53,8 +54,12 @@ const Scheduler = () => {
     useState(false);
 
   const fetchPosts = async () => {
-
-    setPosts(dummyPostsData);
+    try {
+      const { data } = await api.get("/api/posts");
+      setPosts(data)
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message);
+    }
   };
 
   useEffect(() => {
@@ -63,7 +68,7 @@ const Scheduler = () => {
 
     const interval = setInterval(
       async () => await fetchPosts(),
-      1000
+      10000
     );
 
     return () => clearInterval(interval);
@@ -82,29 +87,49 @@ const Scheduler = () => {
     setSelectedPlatforms((prev) =>
       prev.includes(id)
         ? prev.filter(
-            (platform) => platform !== id
-          )
+          (platform) => platform !== id
+        )
         : [...prev, id]
     );
 
   const handleSchedule = async (e) => {
 
     e.preventDefault();
-
+    if (selectedPlatforms.length === 0) {
+      toast.error("Select at least one platform.");
+      return;
+    }
+    if (!scheduledDate || !scheduledTime) {
+      toast.error("Select date and time.");
+      return;
+    }
+    if (selectedPlatforms.includes("instagram") && !mediaFile) {
+      toast.error("Instagram requires an image or video.");
+      return;
+    }
+    const scheduledFor = new Date(`${scheduledDate}T${scheduledTime}`).toISOString();
+    const formData = new FormData();
+    formData.append("content", content);
+    formData.append("scheduledFor", scheduledFor);
+    formData.append("status", "scheduled");
+    formData.append("platforms", JSON.stringify(selectedPlatforms));
+    if (mediaFile) formData.append("media", mediaFile);
     setLoading(true);
-
-    setTimeout(() => {
-
+    try {
+      await api.post("/api/posts", formData, { headers: { "Content-Type": "multipart/form-data" } });
+      toast.success("Post Scheduled!");
+      setContent("");
+      setScheduledDate("");
+      setScheduledTime("");
+      setSelectedPlatforms([]);
+      setMediaFile(null);
+      fetchPosts();
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
       setLoading(false);
-
-      setPosts((prev) => [
-        ...prev,
-        dummyPostsData[0],
-      ]);
-
-    }, 1000);
+    }
   };
-
   return (
 
     <div
@@ -134,12 +159,11 @@ const Scheduler = () => {
 
             transition-all duration-300
 
-            ${
-              theme === "light"
+            ${theme === "light"
 
-                ? "bg-white border-slate-200"
+              ? "bg-white border-slate-200"
 
-                : "bg-[#111111] border-[#ffffff10]"
+              : "bg-[#111111] border-[#ffffff10]"
             }
           `}
         >
@@ -156,10 +180,9 @@ const Scheduler = () => {
               className={`
                 text-lg
 
-                ${
-                  theme === "light"
-                    ? "text-slate-700"
-                    : "text-white"
+                ${theme === "light"
+                  ? "text-slate-700"
+                  : "text-white"
                 }
               `}
             >
@@ -183,10 +206,9 @@ const Scheduler = () => {
                   uppercase
                   mb-2
 
-                  ${
-                    theme === "light"
-                      ? "text-slate-500"
-                      : "text-slate-400"
+                  ${theme === "light"
+                    ? "text-slate-500"
+                    : "text-slate-400"
                   }
                 `}
               >
@@ -224,16 +246,15 @@ const Scheduler = () => {
 
                             transition-all duration-150
 
-                            ${
-                              active
+                            ${active
 
-                                ? "bg-red-50 border-red-300 text-red-500 scale-105"
+                              ? "bg-red-50 border-red-300 text-red-500 scale-105"
 
-                                : theme === "light"
+                              : theme === "light"
 
-                                  ? "border-slate-200 text-slate-500 hover:border-slate-300"
+                                ? "border-slate-200 text-slate-500 hover:border-slate-300"
 
-                                  : "border-[#ffffff12] text-slate-400 hover:border-[#ffffff25] hover:bg-[#1a1a1a]"
+                                : "border-[#ffffff12] text-slate-400 hover:border-[#ffffff25] hover:bg-[#1a1a1a]"
                             }
                           `}
                         >
@@ -260,10 +281,9 @@ const Scheduler = () => {
                   uppercase
                   mb-2
 
-                  ${
-                    theme === "light"
-                      ? "text-slate-500"
-                      : "text-slate-400"
+                  ${theme === "light"
+                    ? "text-slate-500"
+                    : "text-slate-400"
                   }
                 `}
               >
@@ -294,12 +314,11 @@ const Scheduler = () => {
 
                   transition-all duration-300
 
-                  ${
-                    theme === "light"
+                  ${theme === "light"
 
-                      ? "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400"
+                    ? "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400"
 
-                      : "bg-[#1a1a1a] border-[#ffffff12] text-white placeholder-slate-500"
+                    : "bg-[#1a1a1a] border-[#ffffff12] text-white placeholder-slate-500"
                   }
                 `}
               />
@@ -311,16 +330,15 @@ const Scheduler = () => {
                   mt-1
                   font-medium
 
-                  ${
-                    content.length > 270
+                  ${content.length > 270
 
-                      ? "text-red-500"
+                    ? "text-red-500"
 
-                      : theme === "light"
+                    : theme === "light"
 
-                        ? "text-slate-400"
+                      ? "text-slate-400"
 
-                        : "text-slate-500"
+                      : "text-slate-500"
                   }
                 `}
               >
@@ -339,10 +357,9 @@ const Scheduler = () => {
                   uppercase
                   mb-2
 
-                  ${
-                    theme === "light"
-                      ? "text-slate-500"
-                      : "text-slate-400"
+                  ${theme === "light"
+                    ? "text-slate-500"
+                    : "text-slate-400"
                   }
                 `}
               >
@@ -360,12 +377,11 @@ const Scheduler = () => {
                         overflow-hidden
                         border
 
-                        ${
-                          theme === "light"
+                        ${theme === "light"
 
-                            ? "border-slate-200 bg-slate-50"
+                          ? "border-slate-200 bg-slate-50"
 
-                            : "border-[#ffffff12] bg-[#1a1a1a]"
+                          : "border-[#ffffff12] bg-[#1a1a1a]"
                         }
                       `}
                     >
@@ -448,12 +464,11 @@ const Scheduler = () => {
 
                         transition-all duration-300
 
-                        ${
-                          theme === "light"
+                        ${theme === "light"
 
-                            ? "border-slate-200 hover:border-red-300 hover:bg-red-50/30"
+                          ? "border-slate-200 hover:border-red-300 hover:bg-red-50/30"
 
-                            : "border-[#ffffff12] hover:border-red-500/30 hover:bg-[#1a1a1a]"
+                          : "border-[#ffffff12] hover:border-red-500/30 hover:bg-[#1a1a1a]"
                         }
                       `}
                     >
@@ -462,12 +477,11 @@ const Scheduler = () => {
                         className={`
                           text-sm
 
-                          ${
-                            theme === "light"
+                          ${theme === "light"
 
-                              ? "text-slate-500"
+                            ? "text-slate-500"
 
-                              : "text-slate-400"
+                            : "text-slate-400"
                           }
                         `}
                       >
@@ -513,10 +527,9 @@ const Scheduler = () => {
                     uppercase
                     mb-2
 
-                    ${
-                      theme === "light"
-                        ? "text-slate-500"
-                        : "text-slate-400"
+                    ${theme === "light"
+                      ? "text-slate-500"
+                      : "text-slate-400"
                     }
                   `}
                 >
@@ -532,10 +545,9 @@ const Scheduler = () => {
                       left-3 top-1/2
                       -translate-y-1/2
 
-                      ${
-                        theme === "light"
-                          ? "text-slate-400"
-                          : "text-slate-500"
+                      ${theme === "light"
+                        ? "text-slate-400"
+                        : "text-slate-500"
                       }
                     `}
                   />
@@ -560,12 +572,11 @@ const Scheduler = () => {
                       text-sm
                       outline-none
 
-                      ${
-                        theme === "light"
+                      ${theme === "light"
 
-                          ? "bg-slate-50 border-slate-200 text-slate-900"
+                        ? "bg-slate-50 border-slate-200 text-slate-900"
 
-                          : "bg-[#1a1a1a] border-[#ffffff12] text-white"
+                        : "bg-[#1a1a1a] border-[#ffffff12] text-white"
                       }
                     `}
                   />
@@ -583,10 +594,9 @@ const Scheduler = () => {
                     uppercase
                     mb-2
 
-                    ${
-                      theme === "light"
-                        ? "text-slate-500"
-                        : "text-slate-400"
+                    ${theme === "light"
+                      ? "text-slate-500"
+                      : "text-slate-400"
                     }
                   `}
                 >
@@ -602,10 +612,9 @@ const Scheduler = () => {
                       left-3 top-1/2
                       -translate-y-1/2
 
-                      ${
-                        theme === "light"
-                          ? "text-slate-400"
-                          : "text-slate-500"
+                      ${theme === "light"
+                        ? "text-slate-400"
+                        : "text-slate-500"
                       }
                     `}
                   />
@@ -630,12 +639,11 @@ const Scheduler = () => {
                       text-sm
                       outline-none
 
-                      ${
-                        theme === "light"
+                      ${theme === "light"
 
-                          ? "bg-slate-50 border-slate-200 text-slate-900"
+                        ? "bg-slate-50 border-slate-200 text-slate-900"
 
-                          : "bg-[#1a1a1a] border-[#ffffff12] text-white"
+                        : "bg-[#1a1a1a] border-[#ffffff12] text-white"
                       }
                     `}
                   />
@@ -721,12 +729,11 @@ const Scheduler = () => {
             border
             overflow-hidden
 
-            ${
-              theme === "light"
+            ${theme === "light"
 
-                ? "bg-white border-slate-200"
+              ? "bg-white border-slate-200"
 
-                : "bg-[#111111] border-[#ffffff10]"
+              : "bg-[#111111] border-[#ffffff10]"
             }
           `}
         >
@@ -740,12 +747,11 @@ const Scheduler = () => {
 
               border-b
 
-              ${
-                theme === "light"
+              ${theme === "light"
 
-                  ? "border-slate-100"
+                ? "border-slate-100"
 
-                  : "border-[#ffffff10]"
+                : "border-[#ffffff10]"
               }
             `}
           >
@@ -754,10 +760,9 @@ const Scheduler = () => {
               className={`
                 size-4
 
-                ${
-                  theme === "light"
-                    ? "text-zinc-500"
-                    : "text-zinc-400"
+                ${theme === "light"
+                  ? "text-zinc-500"
+                  : "text-zinc-400"
                 }
               `}
             />
@@ -766,10 +771,9 @@ const Scheduler = () => {
               className={`
                 text-sm
 
-                ${
-                  theme === "light"
-                    ? "text-slate-900"
-                    : "text-white"
+                ${theme === "light"
+                  ? "text-slate-900"
+                  : "text-white"
                 }
               `}
             >
@@ -786,12 +790,11 @@ const Scheduler = () => {
                 px-2 py-0.5
                 rounded-full
 
-                ${
-                  theme === "light"
+                ${theme === "light"
 
-                    ? "bg-zinc-100 text-zinc-700"
+                  ? "bg-zinc-100 text-zinc-700"
 
-                    : "bg-[#1a1a1a] text-zinc-300"
+                  : "bg-[#1a1a1a] text-zinc-300"
                 }
               `}
             >
@@ -806,12 +809,11 @@ const Scheduler = () => {
 
               divide-y
 
-              ${
-                theme === "light"
+              ${theme === "light"
 
-                  ? "divide-slate-50"
+                ? "divide-slate-50"
 
-                  : "divide-[#ffffff08]"
+                : "divide-[#ffffff08]"
               }
             `}
           >
@@ -822,10 +824,9 @@ const Scheduler = () => {
                   text-center
                   text-sm
 
-                  ${
-                    theme === "light"
-                      ? "text-slate-400"
-                      : "text-slate-500"
+                  ${theme === "light"
+                    ? "text-slate-400"
+                    : "text-slate-500"
                   }
                 `}
               >
@@ -839,12 +840,11 @@ const Scheduler = () => {
                     px-5 py-4
                     transition-colors
 
-                    ${
-                      theme === "light"
+                    ${theme === "light"
 
-                        ? "hover:bg-slate-50/60"
+                      ? "hover:bg-slate-50/60"
 
-                        : "hover:bg-[#1a1a1a]"
+                      : "hover:bg-[#1a1a1a]"
                     }
                   `}
                 >
@@ -883,12 +883,11 @@ const Scheduler = () => {
                                   className={`
                                     size-3.5
 
-                                    ${
-                                      theme === "light"
+                                    ${theme === "light"
 
-                                        ? "text-slate-400"
+                                      ? "text-slate-400"
 
-                                        : "text-slate-500"
+                                      : "text-slate-500"
                                     }
                                   `}
                                 />
@@ -920,12 +919,11 @@ const Scheduler = () => {
                               font-semibold
                               capitalize
 
-                              ${
-                                theme === "light"
+                              ${theme === "light"
 
-                                  ? "bg-slate-100 text-slate-600 border-slate-200"
+                                ? "bg-slate-100 text-slate-600 border-slate-200"
 
-                                  : "bg-[#1a1a1a] text-slate-300 border-[#ffffff12]"
+                                : "bg-[#1a1a1a] text-slate-300 border-[#ffffff12]"
                               }
                             `}
                           >
@@ -938,10 +936,9 @@ const Scheduler = () => {
                         className={`
                           text-xs
 
-                          ${
-                            theme === "light"
-                              ? "text-slate-400"
-                              : "text-slate-500"
+                          ${theme === "light"
+                            ? "text-slate-400"
+                            : "text-slate-500"
                           }
                         `}
                       >
@@ -960,10 +957,9 @@ const Scheduler = () => {
                       line-clamp-2
                       max-w-md
 
-                      ${
-                        theme === "light"
-                          ? "text-slate-500"
-                          : "text-slate-300"
+                      ${theme === "light"
+                        ? "text-slate-500"
+                        : "text-slate-300"
                       }
                     `}
                   >
@@ -983,12 +979,11 @@ const Scheduler = () => {
             border
             overflow-hidden
 
-            ${
-              theme === "light"
+            ${theme === "light"
 
-                ? "bg-white border-slate-200"
+              ? "bg-white border-slate-200"
 
-                : "bg-[#111111] border-[#ffffff10]"
+              : "bg-[#111111] border-[#ffffff10]"
             }
           `}
         >
@@ -1002,12 +997,11 @@ const Scheduler = () => {
 
               border-b
 
-              ${
-                theme === "light"
+              ${theme === "light"
 
-                  ? "border-slate-100"
+                ? "border-slate-100"
 
-                  : "border-[#ffffff10]"
+                : "border-[#ffffff10]"
               }
             `}
           >
@@ -1016,10 +1010,9 @@ const Scheduler = () => {
               className={`
                 size-4
 
-                ${
-                  theme === "light"
-                    ? "text-zinc-500"
-                    : "text-zinc-400"
+                ${theme === "light"
+                  ? "text-zinc-500"
+                  : "text-zinc-400"
                 }
               `}
             />
@@ -1028,10 +1021,9 @@ const Scheduler = () => {
               className={`
                 text-sm
 
-                ${
-                  theme === "light"
-                    ? "text-slate-900"
-                    : "text-white"
+                ${theme === "light"
+                  ? "text-slate-900"
+                  : "text-white"
                 }
               `}
             >
@@ -1048,12 +1040,11 @@ const Scheduler = () => {
                 px-2 py-0.5
                 rounded-full
 
-                ${
-                  theme === "light"
+                ${theme === "light"
 
-                    ? "bg-zinc-100 text-zinc-700"
+                  ? "bg-zinc-100 text-zinc-700"
 
-                    : "bg-[#1a1a1a] text-zinc-300"
+                  : "bg-[#1a1a1a] text-zinc-300"
                 }
               `}
             >
@@ -1068,12 +1059,11 @@ const Scheduler = () => {
 
               divide-y
 
-              ${
-                theme === "light"
+              ${theme === "light"
 
-                  ? "divide-slate-50"
+                ? "divide-slate-50"
 
-                  : "divide-[#ffffff08]"
+                : "divide-[#ffffff08]"
               }
             `}
           >
@@ -1084,10 +1074,9 @@ const Scheduler = () => {
                   text-center
                   text-sm
 
-                  ${
-                    theme === "light"
-                      ? "text-slate-400"
-                      : "text-slate-500"
+                  ${theme === "light"
+                    ? "text-slate-400"
+                    : "text-slate-500"
                   }
                 `}
               >
@@ -1101,12 +1090,11 @@ const Scheduler = () => {
                     px-5 py-4
                     transition-colors
 
-                    ${
-                      theme === "light"
+                    ${theme === "light"
 
-                        ? "hover:bg-slate-50/60"
+                      ? "hover:bg-slate-50/60"
 
-                        : "hover:bg-[#1a1a1a]"
+                      : "hover:bg-[#1a1a1a]"
                     }
                   `}
                 >
@@ -1145,12 +1133,11 @@ const Scheduler = () => {
                                   className={`
                                     size-3.5
 
-                                    ${
-                                      theme === "light"
+                                    ${theme === "light"
 
-                                        ? "text-slate-400"
+                                      ? "text-slate-400"
 
-                                        : "text-slate-500"
+                                      : "text-slate-500"
                                     }
                                   `}
                                 />
@@ -1182,12 +1169,11 @@ const Scheduler = () => {
                               font-semibold
                               capitalize
 
-                              ${
-                                theme === "light"
+                              ${theme === "light"
 
-                                  ? "bg-slate-100 text-slate-600 border-slate-200"
+                                ? "bg-slate-100 text-slate-600 border-slate-200"
 
-                                  : "bg-[#1a1a1a] text-slate-300 border-[#ffffff12]"
+                                : "bg-[#1a1a1a] text-slate-300 border-[#ffffff12]"
                               }
                             `}
                           >
@@ -1200,10 +1186,9 @@ const Scheduler = () => {
                         className={`
                           text-xs
 
-                          ${
-                            theme === "light"
-                              ? "text-slate-400"
-                              : "text-slate-500"
+                          ${theme === "light"
+                            ? "text-slate-400"
+                            : "text-slate-500"
                           }
                         `}
                       >
@@ -1239,10 +1224,9 @@ const Scheduler = () => {
                       line-clamp-2
                       max-w-[80%]
 
-                      ${
-                        theme === "light"
-                          ? "text-slate-500"
-                          : "text-slate-300"
+                      ${theme === "light"
+                        ? "text-slate-500"
+                        : "text-slate-300"
                       }
                     `}
                   >

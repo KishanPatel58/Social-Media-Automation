@@ -172,7 +172,6 @@ imagePrompt should be highly descriptive.`,
 
     } catch (error) {
 
-        console.log(error);
 
         return res.status(500).json({
 
@@ -217,7 +216,6 @@ const schedulePost = async (req, res) => {
 
         let mediaUrl = req.body.mediaUrl;
         let mediaType = req.body.mediaType;
-
         if (req.file) {
             const result = await imageKit.upload({
                 file: fs.readFileSync(req.file.path),
@@ -226,7 +224,16 @@ const schedulePost = async (req, res) => {
 
             mediaUrl = result.url;
         }
-        mediaType = req.file.startsWith("/images") ? "image" : "video";
+        if (req.file) {
+            const mime = req.file.mimetype;
+
+            if (mime.startsWith("image/")) {
+                mediaType = "image";
+            } else if (mime.startsWith("video/")) {
+                mediaType = "video";
+            }
+        }
+        
         const post = await postModel.create({
             user: req.user._id,
             content,

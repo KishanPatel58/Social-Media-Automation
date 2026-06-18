@@ -1,14 +1,15 @@
 import {
     useContext,
     useState,
-    useMemo
+    useMemo,
+    useEffect
 } from "react";
 
 import {
     Link,
     useNavigate,
 } from "react-router-dom";
-
+import { toast } from "react-hot-toast"
 import {
     ArrowLeftIcon,
     ArrowRightIcon,
@@ -21,6 +22,8 @@ import {
 } from "lucide-react";
 
 import { themeContext } from "../context/theme/ThemeContext";
+import { useAuth } from "../context/auth/AuthContext";
+import api from "../api/axios";
 
 export default function Auth() {
 
@@ -43,22 +46,29 @@ export default function Auth() {
         useState(false);
 
     const navigate = useNavigate();
-
+    const { login, user } = useAuth()
     const handleSubmit =
         async (e) => {
 
             e.preventDefault();
 
             setLoading(true);
-
-            setTimeout(() => {
-
-                setLoading(false);
-
-                navigate("/dashboard");
-
-            }, 1500);
+            try {
+                const { data } = await api.post(`/api/auth/${loginState ? "login" : "register"}`, { name, email, password });
+                login(data, data.token);
+                toast.success("User Loggedin Successfully..")
+                navigate("/dashboard")
+            } catch (error) {
+                toast.error(error.message)
+            }
+            finally{
+                setLoading(false)
+            }
         };
+
+    useEffect(()=>{
+        if(user)navigate("/dashboard")
+    },[user])
 
     const themeHandle = () => {
 

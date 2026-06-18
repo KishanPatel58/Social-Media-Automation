@@ -13,13 +13,9 @@ import {
     useState,
 } from "react";
 
-import {
-    dummyAccountsData,
-    dummyActivityData,
-    dummyPostsData,
-} from "../assets/assets";
-
 import { themeContext } from "../context/theme/ThemeContext";
+import api from "../api/axios";
+import { toast } from "react-hot-toast";
 
 const Dashboard = () => {
 
@@ -46,11 +42,7 @@ const Dashboard = () => {
                         postsRes,
                         accountsRes,
                         activityRes,
-                    ] = [
-                        { data: dummyPostsData },
-                        { data: dummyAccountsData },
-                        { data: dummyActivityData },
-                    ];
+                    ] = await Promise.all([api.get("/api/posts"),api.get("/api/accounts"),api.get("/api/activity")])
 
                     const posts = postsRes.data;
 
@@ -83,7 +75,7 @@ const Dashboard = () => {
 
                 } catch (error) {
 
-                    console.error(
+                    toast.error(
                         `Error fetching dashboard data: ${error}`
                     );
                 }
@@ -126,10 +118,9 @@ const Dashboard = () => {
                     className={`
                         text-2xl
 
-                        ${
-                            theme === "light"
-                                ? "text-slate-900"
-                                : "text-white"
+                        ${theme === "light"
+                            ? "text-slate-900"
+                            : "text-white"
                         }
                     `}
                 >
@@ -141,10 +132,9 @@ const Dashboard = () => {
                         text-sm
                         mt-0.5
 
-                        ${
-                            theme === "light"
-                                ? "text-slate-500"
-                                : "text-slate-400"
+                        ${theme === "light"
+                            ? "text-slate-500"
+                            : "text-slate-400"
                         }
                     `}
                 >
@@ -181,12 +171,11 @@ const Dashboard = () => {
 
                                     transition-all duration-300
 
-                                    ${
-                                        theme === "light"
+                                    ${theme === "light"
 
-                                            ? "bg-white border-slate-200 hover:bg-red-50 hover:border-red-200"
+                                        ? "bg-white border-slate-200 hover:bg-red-50 hover:border-red-200"
 
-                                            : "bg-[#111111] border-[#ffffff10] hover:border-red-500/30 hover:bg-[#171717]"
+                                        : "bg-[#111111] border-[#ffffff10] hover:border-red-500/30 hover:bg-[#171717]"
                                     }
                                 `}
                             >
@@ -205,10 +194,9 @@ const Dashboard = () => {
                                             font-medium
                                             tabular-nums
 
-                                            ${
-                                                theme === "light"
-                                                    ? "text-slate-800"
-                                                    : "text-white"
+                                            ${theme === "light"
+                                                ? "text-slate-800"
+                                                : "text-white"
                                             }
                                         `}
                                     >
@@ -240,10 +228,9 @@ const Dashboard = () => {
                                         text-sm
                                         mt-1
 
-                                        ${
-                                            theme === "light"
-                                                ? "text-slate-500"
-                                                : "text-slate-400"
+                                        ${theme === "light"
+                                            ? "text-slate-500"
+                                            : "text-slate-400"
                                         }
                                     `}
                                 >
@@ -263,12 +250,11 @@ const Dashboard = () => {
                     border
                     overflow-hidden
 
-                    ${
-                        theme === "light"
+                    ${theme === "light"
 
-                            ? "bg-white border-slate-200"
+                        ? "bg-white border-slate-200"
 
-                            : "bg-[#111111] border-[#ffffff10]"
+                        : "bg-[#111111] border-[#ffffff10]"
                     }
                 `}
             >
@@ -284,20 +270,18 @@ const Dashboard = () => {
 
                         border-b
 
-                        ${
-                            theme === "light"
-                                ? "border-slate-100"
-                                : "border-[#ffffff10]"
+                        ${theme === "light"
+                            ? "border-slate-100"
+                            : "border-[#ffffff10]"
                         }
                     `}
                 >
 
                     <h2
                         className={`
-                            ${
-                                theme === "light"
-                                    ? "text-slate-900"
-                                    : "text-white"
+                            ${theme === "light"
+                                ? "text-slate-900"
+                                : "text-white"
                             }
                         `}
                     >
@@ -308,10 +292,9 @@ const Dashboard = () => {
                         className={`
                             text-sm
 
-                            ${
-                                theme === "light"
-                                    ? "text-slate-400"
-                                    : "text-slate-500"
+                            ${theme === "light"
+                                ? "text-slate-400"
+                                : "text-slate-500"
                             }
                         `}
                     >
@@ -342,10 +325,9 @@ const Dashboard = () => {
 
                                     mb-3
 
-                                    ${
-                                        theme === "light"
-                                            ? "bg-slate-100"
-                                            : "bg-[#1a1a1a]"
+                                    ${theme === "light"
+                                        ? "bg-slate-100"
+                                        : "bg-[#1a1a1a]"
                                     }
                                 `}
                             >
@@ -354,10 +336,9 @@ const Dashboard = () => {
                                     className={`
                                         size-6
 
-                                        ${
-                                            theme === "light"
-                                                ? "text-slate-400"
-                                                : "text-slate-500"
+                                        ${theme === "light"
+                                            ? "text-slate-400"
+                                            : "text-slate-500"
                                         }
                                     `}
                                 />
@@ -365,10 +346,9 @@ const Dashboard = () => {
 
                             <p
                                 className={`
-                                    ${
-                                        theme === "light"
-                                            ? "text-slate-500"
-                                            : "text-slate-400"
+                                    ${theme === "light"
+                                        ? "text-slate-500"
+                                        : "text-slate-400"
                                     }
                                 `}
                             >
@@ -380,10 +360,9 @@ const Dashboard = () => {
                                     text-sm
                                     mt-1
 
-                                    ${
-                                        theme === "light"
-                                            ? "text-slate-400"
-                                            : "text-slate-500"
+                                    ${theme === "light"
+                                        ? "text-slate-400"
+                                        : "text-slate-500"
                                     }
                                 `}
                             >
@@ -397,10 +376,9 @@ const Dashboard = () => {
                             className={`
                                 divide-y
 
-                                ${
-                                    theme === "light"
-                                        ? "divide-slate-50"
-                                        : "divide-[#ffffff08]"
+                                ${theme === "light"
+                                    ? "divide-slate-50"
+                                    : "divide-[#ffffff08]"
                                 }
                             `}
                         >
@@ -420,12 +398,11 @@ const Dashboard = () => {
 
                                                     transition-colors
 
-                                                    ${
-                                                        theme === "light"
+                                                    ${theme === "light"
 
-                                                            ? "hover:bg-slate-50/50"
+                                                        ? "hover:bg-slate-50/50"
 
-                                                            : "hover:bg-[#171717]"
+                                                        : "hover:bg-[#171717]"
                                                     }
                                                 `}
                                             >
@@ -440,12 +417,11 @@ const Dashboard = () => {
                                                         shrink-0
                                                         mt-0.5
 
-                                                        ${
-                                                            theme === "light"
+                                                        ${theme === "light"
 
-                                                                ? "bg-zinc-100 text-zinc-600"
+                                                            ? "bg-zinc-100 text-zinc-600"
 
-                                                                : "bg-[#1a1a1a] text-zinc-400"
+                                                            : "bg-[#1a1a1a] text-zinc-400"
                                                         }
                                                     `}
                                                 >
@@ -474,12 +450,11 @@ const Dashboard = () => {
 
                                                                 rounded-full
 
-                                                                ${
-                                                                    theme === "light"
+                                                                ${theme === "light"
 
-                                                                        ? "bg-zinc-100 text-zinc-600"
+                                                                    ? "bg-zinc-100 text-zinc-600"
 
-                                                                        : "bg-[#1a1a1a] text-zinc-300"
+                                                                    : "bg-[#1a1a1a] text-zinc-300"
                                                                 }
                                                             `}
                                                         >
@@ -491,10 +466,9 @@ const Dashboard = () => {
                                                                 text-xs
                                                                 shrink-0
 
-                                                                ${
-                                                                    theme === "light"
-                                                                        ? "text-slate-400"
-                                                                        : "text-slate-500"
+                                                                ${theme === "light"
+                                                                    ? "text-slate-400"
+                                                                    : "text-slate-500"
                                                                 }
                                                             `}
                                                         >
@@ -506,17 +480,7 @@ const Dashboard = () => {
                                                         </span>
                                                     </div>
 
-                                                    <p
-                                                        className={`
-                                                            text-sm
-
-                                                            ${
-                                                                theme === "light"
-                                                                    ? "text-slate-600"
-                                                                    : "text-slate-300"
-                                                            }
-                                                        `}
-                                                    >
+                                                    <p className={`text-sm ${theme === "light" ? "text-slate-600" : "text-slate-300"}`}>
                                                         {activity.description}
                                                     </p>
                                                 </div>

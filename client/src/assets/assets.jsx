@@ -15,9 +15,8 @@ const LinkedInIcon = (props) => (
 );
 
 export const PLATFORMS = [
-    { id: "twitter", name: "Twitter / X", icon: SiX, description: "Post tweets, threads, and media" },
+
     { id: "linkedin", name: "LinkedIn", icon: LinkedInIcon, description: "Publish to your profile & company pages" },
-    { id: "facebook", name: "Facebook", icon: SiFacebook, description: "Manage your pages and profile" },
     { id: "instagram", name: "Instagram", icon: SiInstagram, description: "Share photos, reels and stories" },
 ];
 

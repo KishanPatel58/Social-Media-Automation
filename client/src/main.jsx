@@ -3,11 +3,14 @@ import "./index.css";
 import App from "./App.jsx";
 import { BrowserRouter } from "react-router-dom";
 import ThemeContext from "./context/theme/ThemeContext.jsx";
+import AuthContext from "./context/auth/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <ThemeContext>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthContext>
         <App />
-      </BrowserRouter>
+      </AuthContext>
+    </BrowserRouter>
   </ThemeContext>
 );

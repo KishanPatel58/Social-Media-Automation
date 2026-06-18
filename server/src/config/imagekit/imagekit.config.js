@@ -1,10 +1,9 @@
-const ImageKit = require("@imagekit/nodejs");
+const ImageKit = require("imagekit");
 const ENV = require("../environments/env");
 
-const imageKit = ImageKit({
-    privatekey: ENV.IMAGEKIT_PRIVATE_KEY,
-    publickey: ENV.IMAGEKIT_PUBLIC_KEY,
+const imageKit = new ImageKit({
+    publicKey: ENV.IMAGEKIT_PUBLIC_KEY,
+    privateKey: ENV.IMAGEKIT_PRIVATE_KEY,
     urlEndpoint: ENV.IMAGEKIT_URL_END_POINT
 })
-
 module.exports = imageKit;

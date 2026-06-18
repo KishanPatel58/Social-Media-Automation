@@ -12,10 +12,11 @@ import {
 } from "react";
 
 import { themeContext } from "../../context/theme/ThemeContext";
+import { useAuth } from "../../context/auth/AuthContext";
 
 export default function Navbar() {
 
-    const { user } = { user: false };
+    const { user } = useAuth();
 
     const { theme, setTheme } = useContext(themeContext);
 
@@ -164,7 +165,7 @@ export default function Navbar() {
                                 }
                             `}
                         >
-                            Sign In
+                            {!user?"Sign In":""}
                         </Link>
 
                         <Link
@@ -182,7 +183,7 @@ export default function Navbar() {
                                 transition-all
                             "
                         >
-                            Get Started
+                            {!user?"Get Started":"Go to Dashboard"}
 
                             <ArrowRightIcon className="size-3.5" />
                         </Link>

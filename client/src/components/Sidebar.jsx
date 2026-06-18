@@ -7,7 +7,6 @@ import {
     UsersIcon,
     Wand2Icon,
 } from "lucide-react";
-const { VITE_AI_COMPOSER_FEATURE_ENABLED } = import.meta.env;
 import { useContext } from "react";
 import {toast} from "react-hot-toast"
 import {
@@ -17,26 +16,15 @@ import {
 } from "react-router-dom";
 
 import { themeContext } from "../context/theme/ThemeContext";
+import { useAuth } from "../context/auth/AuthContext";
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
-    const condetion = VITE_AI_COMPOSER_FEATURE_ENABLED === "true"
     const navigate = useNavigate();
 
     const { theme, setTheme } =
         useContext(themeContext);
 
-    const { logout, user } = {
-
-        logout: () => {
-            window.location.href = "/";
-        },
-
-        user: {
-            name: "Kishan Patel",
-            email: "patelkishan@gmail.com",
-        },
-    };
-
+    const { logout, user } = useAuth();
     const location = useLocation();
 
     const navlinks = [
@@ -183,12 +171,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 key={idx}
                                 to={link.to}
                                 end={link.to === "/dashboard"}
-                                onClick={() =>{
-                                    setIsOpen(false)
-                                    if(link.to === "/ai-composer"){
-                                        toast.error("This feature is under development.")
-                                    }
-                                }}
+                                onClick={() =>setIsOpen(false)}
                                 className={`
                                     flex items-center gap-3
 
@@ -312,7 +295,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                         "
                     >
                         {
-                            user?.name
+                            user?.user?.name
                                 ?.charAt(0)
                                 .toUpperCase() || "U"
                         }
@@ -334,7 +317,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 }
                             `}
                         >
-                            {user?.name}
+                            {user?.user?.name}
                         </div>
 
                         <div
@@ -349,7 +332,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 }
                             `}
                         >
-                            {user?.email}
+                            {user?.user?.email}
                         </div>
                     </div>
 

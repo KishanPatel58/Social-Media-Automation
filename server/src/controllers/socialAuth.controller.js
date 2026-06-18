@@ -45,7 +45,7 @@ const generateAuthUrl = async (req, res) => {
             query: { profileId, redirect_url: redirectUrl }
         })
         const data = result.data;
-        console.log("Get ConnectUrl Response:", JSON.stringify(data, null, 2));
+        
         const authUrl = data.authUrl;
         if (!authUrl) {
             throw new Error(`Zernio returned no authUrl. Full response: ${JSON.stringify(data)}`)
@@ -85,7 +85,7 @@ const syncAccounts = async (req, res) => {
                 continue;
             }
             const account = await accountModel.findOneAndUpdate({ zernioAccountId: zid }, { user: req.user._id, platform: normalizedPlatform, handle: zAccount.username || zAccount.name || zAccount.handle || "Unknown", zernioAccountId: zid, status: "connected", avatarUrl: zAccount.avatarUrl || zAccount.picture || zAccount.profile_image_url }, { upsert: true , returnDocument: 'after'})
-            syncAccounts.push(account);
+            syncedAccounts.push(account);
         }
         res.status(200).json({message: "Account Sync now.",syncAccounts})
     } catch (error) {

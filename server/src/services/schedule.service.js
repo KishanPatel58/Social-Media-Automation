@@ -4,7 +4,7 @@ const accountModel = require("../models/account.model");
 const zernio = require("../config/zernio/zernio");
 const activityModel = require("../models/activity.model");
 
-const initScheduler = () => {
+const initScheduler = async () => {
     cron.schedule("* * * * *", async () => {
         try {
             const now = new Date();
@@ -70,7 +70,6 @@ const initScheduler = () => {
             console.error(`Error in Scheduler: ${error}`)
         }
     })
-    console.log("Scheduler service initialized.")
 }
 
 module.exports = {initScheduler}

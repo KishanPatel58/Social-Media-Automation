@@ -8,12 +8,12 @@ const accountRouter = require("./routes/accounts.routes");
 const postRouter = require("./routes/post.routes");
 const activityRouter = require("./routes/activity.routes");
 const app = express();
-
+const origin = ENV.CLIENT_URL || "http://localhost:5173"
 // Middlewares 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(cors({ origin: ENV.CLIENT_URL }))
+app.use(cors({ origin: origin}))
 
 // Dummy Route
 app.get("/", (req, res) => {

@@ -6,6 +6,7 @@ import React, {
 import Sidebar from "./Sidebar";
 
 import {
+    Navigate,
     Outlet,
     useLocation,
 } from "react-router-dom";
@@ -13,6 +14,7 @@ import {
 import { MenuIcon } from "lucide-react";
 
 import { themeContext } from "../context/theme/ThemeContext";
+import { useAuth } from "../context/auth/AuthContext";
 
 const pagetitle = {
     "/dashboard": "Dashboard",
@@ -36,7 +38,17 @@ const Layout = () => {
         isMobileMenuOpen,
         setIsMobileMenuOpen,
     ] = useState(false);
-
+    const { isAuthenticated, isLoading } = useAuth();
+    if (isLoading) {
+        return (
+            <div className="flex h-screen items-center justify-center bg-slate-50">
+                <div className="size-8 border-4 border-red-500 border-t-transparent rounded-full animate-spin" />
+            </div>
+        )
+    }
+    if(!isAuthenticated){
+        return <Navigate to="/login" replace/>
+    }
     return (
 
         <div
@@ -46,10 +58,9 @@ const Layout = () => {
 
                 transition-colors duration-300
 
-                ${
-                    theme === "light"
-                        ? "bg-slate-50"
-                        : "bg-[#0a0a0a]"
+                ${theme === "light"
+                    ? "bg-slate-50"
+                    : "bg-[#0a0a0a]"
                 }
             `}
         >
@@ -67,16 +78,14 @@ const Layout = () => {
 
                             transition-opacity duration-300
 
-                            ${
-                                theme === "light"
-                                    ? "bg-black/50"
-                                    : "bg-black/70"
+                            ${theme === "light"
+                                ? "bg-black/50"
+                                : "bg-black/70"
                             }
 
-                            ${
-                                isMobileMenuOpen
-                                    ? "opacity-100 pointer-events-auto"
-                                    : "opacity-0 pointer-events-none"
+                            ${isMobileMenuOpen
+                                ? "opacity-100 pointer-events-auto"
+                                : "opacity-0 pointer-events-none"
                             }
                         `}
                         onClick={() =>
@@ -118,12 +127,11 @@ const Layout = () => {
 
                         transition-colors duration-300
 
-                        ${
-                            theme === "light"
+                        ${theme === "light"
 
-                                ? "bg-white border-slate-200"
+                            ? "bg-white border-slate-200"
 
-                                : "bg-[#111111] border-[#ffffff10]"
+                            : "bg-[#111111] border-[#ffffff10]"
                         }
                     `}
                 >
@@ -139,12 +147,11 @@ const Layout = () => {
 
                             transition-colors duration-300
 
-                            ${
-                                theme === "light"
+                            ${theme === "light"
 
-                                    ? "text-slate-500 hover:text-slate-700"
+                                ? "text-slate-500 hover:text-slate-700"
 
-                                    : "text-slate-400 hover:text-white"
+                                : "text-slate-400 hover:text-white"
                             }
                         `}
                         onClick={() =>
@@ -162,10 +169,9 @@ const Layout = () => {
                             className={`
                                 truncate
 
-                                ${
-                                    theme === "light"
-                                        ? "text-slate-900"
-                                        : "text-white"
+                                ${theme === "light"
+                                    ? "text-slate-900"
+                                    : "text-white"
                                 }
                             `}
                         >
@@ -177,10 +183,9 @@ const Layout = () => {
                                 text-sm
                                 hidden sm:block
 
-                                ${
-                                    theme === "light"
-                                        ? "text-slate-400"
-                                        : "text-slate-500"
+                                ${theme === "light"
+                                    ? "text-slate-400"
+                                    : "text-slate-500"
                                 }
                             `}
                         >
@@ -205,10 +210,9 @@ const Layout = () => {
 
                         transition-colors duration-300
 
-                        ${
-                            theme === "light"
-                                ? "bg-slate-50"
-                                : "bg-[#0a0a0a]"
+                        ${theme === "light"
+                            ? "bg-slate-50"
+                            : "bg-[#0a0a0a]"
                         }
                     `}
                 >

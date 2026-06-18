@@ -13,7 +13,6 @@
   "type": "commonjs",
   "dependencies": {
     "@google/genai": "^2.7.0",
-    "@imagekit/nodejs": "^7.6.3",
     "@zernio/node": "^0.2.194",
     "axios": "^1.16.1",
     "bcryptjs": "^3.0.3",
@@ -21,6 +20,7 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.3",
     "multer": "^2.1.1",

@@ -345,7 +345,7 @@ export default function Navbar() {
                         How it works
                     </a>
 
-                    <a
+                    {/* <a
                         href="#pricing"
                         onClick={() => setMenuOpen(false)}
                         className={`
@@ -358,7 +358,7 @@ export default function Navbar() {
                         `}
                     >
                         Pricing
-                    </a>
+                    </a> */}
 
                     <Link
                         to="/login"

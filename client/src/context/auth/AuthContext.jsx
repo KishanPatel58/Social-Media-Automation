@@ -12,7 +12,6 @@ const AuthContext = (props) => {
             setUser(JSON.parse(storedUser));
             setToken(storedToken);
             api.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
-
         }
         setIsLoading(false)
     }, [])
@@ -48,4 +47,5 @@ export const useAuth = () => {
     }
     return context;
 }
+
 export default AuthContext

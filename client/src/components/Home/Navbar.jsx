@@ -131,19 +131,6 @@ export default function Navbar() {
                         How it works
                     </a>
 
-                    <a
-                        href="#pricing"
-                        className={`
-                            transition-all
-
-                            ${theme === "dark"
-                                ? "hover:text-white"
-                                : "hover:text-slate-900"
-                            }
-                        `}
-                    >
-                        Pricing
-                    </a>
                 </div>
 
                 {/* RIGHT SIDE */}
@@ -344,21 +331,6 @@ export default function Navbar() {
                     >
                         How it works
                     </a>
-
-                    {/* <a
-                        href="#pricing"
-                        onClick={() => setMenuOpen(false)}
-                        className={`
-                            text-sm transition-all
-
-                            ${theme === "dark"
-                                ? "text-slate-300 hover:text-white"
-                                : "text-slate-700 hover:text-black"
-                            }
-                        `}
-                    >
-                        Pricing
-                    </a> */}
 
                     <Link
                         to="/login"

@@ -8,14 +8,14 @@ const accountRouter = require("./routes/accounts.routes");
 const postRouter = require("./routes/post.routes");
 const activityRouter = require("./routes/activity.routes");
 const app = express();
-const origin = ENV.CLIENT_URL
 // Middlewares 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
-app.use(cors({ origin: origin}))
-
-console.log(origin)
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true
+}));
 // Dummy Route
 app.get("/", (req, res) => {
     res.send("Server is Running..")
@@ -26,10 +26,10 @@ app.use("/api/auth", userRouter);
 // social routes
 app.use("/api/oauth", socialAuthRouter);
 // account router
-app.use("/api/accounts",accountRouter)
+app.use("/api/accounts", accountRouter)
 // post router
-app.use("/api/posts",postRouter)
+app.use("/api/posts", postRouter)
 // activity router
-app.use("/api/activity",activityRouter)
+app.use("/api/activity", activityRouter)
 
 module.exports = app;

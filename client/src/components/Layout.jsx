@@ -21,6 +21,10 @@ const pagetitle = {
     "/accounts": "Social Accounts",
     "/schedule": "Post Scheduler",
     "/ai-composer": "AI Composer",
+    "/profile/changename": "Admin",
+    "/profile/changetheme": "Admin",
+    "/profile/upcomminigpost": "Admin",
+    "/profile/scheduledpost": "Admin",
 };
 
 const Layout = () => {

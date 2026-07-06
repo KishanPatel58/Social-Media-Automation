@@ -33,7 +33,7 @@ const features = [
         icon: Share2Icon,
         title: "Multi-Platform",
         description:
-            "Connect Twitter, LinkedIn, Facebook, and Instagram. Post everywhere from one unified workspace.",
+            "Connect LinkedIn, Instagram. Post everywhere from one unified workspace.",
     },
     {
         icon: ZapIcon,
@@ -59,10 +59,9 @@ export default function Features() {
             className={`
                 py-24 transition-all duration-300
 
-                ${
-                    theme === "dark"
-                        ? "bg-black"
-                        : "bg-slate-50"
+                ${theme === "dark"
+                    ? "bg-black"
+                    : "bg-slate-50"
                 }
             `}
         >
@@ -87,10 +86,9 @@ export default function Features() {
                             border
                             transition-all
 
-                            ${
-                                theme === "dark"
-                                    ? "bg-red-500/10 border-red-500/20 text-red-400"
-                                    : "bg-red-500/10 border-red-500/15 text-red-500"
+                            ${theme === "dark"
+                                ? "bg-red-500/10 border-red-500/20 text-red-400"
+                                : "bg-red-500/10 border-red-500/15 text-red-500"
                             }
                         `}
                     >
@@ -109,10 +107,9 @@ export default function Features() {
                             leading-tight
                             transition-all
 
-                            ${
-                                theme === "dark"
-                                    ? "text-white"
-                                    : "text-gray-900"
+                            ${theme === "dark"
+                                ? "text-white"
+                                : "text-gray-900"
                             }
                         `}
                     >
@@ -130,10 +127,9 @@ export default function Features() {
                         className={`
                             mt-5 max-w-xl mx-auto leading-relaxed transition-all
 
-                            ${
-                                theme === "dark"
-                                    ? "text-slate-400"
-                                    : "text-gray-500"
+                            ${theme === "dark"
+                                ? "text-slate-400"
+                                : "text-gray-500"
                             }
                         `}
                     >
@@ -156,10 +152,9 @@ export default function Features() {
                                 transition-all duration-300
                                 group hover:-translate-y-1
 
-                                ${
-                                    theme === "dark"
-                                        ? "bg-[#0f0f0f] border-[#ffffff10] hover:border-[#ffffff20] hover:shadow-[0_8px_30px_rgba(255,255,255,0.03)]"
-                                        : "bg-white border-slate-100 hover:border-slate-200 hover:shadow-md hover:shadow-slate-100"
+                                ${theme === "dark"
+                                    ? "bg-[#0f0f0f] border-[#ffffff10] hover:border-[#ffffff20] hover:shadow-[0_8px_30px_rgba(255,255,255,0.03)]"
+                                    : "bg-white border-slate-100 hover:border-slate-200 hover:shadow-md hover:shadow-slate-100"
                                 }
                             `}
                         >
@@ -172,10 +167,9 @@ export default function Features() {
                                     flex items-center justify-center
                                     mb-4 transition-all
 
-                                    ${
-                                        theme === "dark"
-                                            ? "bg-red-500/10 text-red-400"
-                                            : "bg-red-50 text-red-500"
+                                    ${theme === "dark"
+                                        ? "bg-red-500/10 text-red-400"
+                                        : "bg-red-50 text-red-500"
                                     }
                                 `}
                             >
@@ -188,10 +182,9 @@ export default function Features() {
                                 className={`
                                     mb-2 text-lg font-medium transition-all
 
-                                    ${
-                                        theme === "dark"
-                                            ? "text-white"
-                                            : "text-slate-900"
+                                    ${theme === "dark"
+                                        ? "text-white"
+                                        : "text-slate-900"
                                     }
                                 `}
                             >
@@ -204,10 +197,9 @@ export default function Features() {
                                 className={`
                                     text-sm leading-relaxed transition-all
 
-                                    ${
-                                        theme === "dark"
-                                            ? "text-slate-400"
-                                            : "text-slate-500/90"
+                                    ${theme === "dark"
+                                        ? "text-slate-400"
+                                        : "text-slate-500/90"
                                     }
                                 `}
                             >

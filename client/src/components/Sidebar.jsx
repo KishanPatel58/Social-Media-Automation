@@ -1,31 +1,34 @@
 import {
+    BookMarked,
+    CalendarCheck,
     CalendarDaysIcon,
     LayoutDashboardIcon,
     LogOut,
     Moon,
     Sun,
     UsersIcon,
+    UserStar,
     Wand2Icon,
 } from "lucide-react";
 import { useContext } from "react";
-import {toast} from "react-hot-toast"
+import { toast } from "react-hot-toast"
 import {
     NavLink,
     useLocation,
-    useNavigate,
+    useNavigate
 } from "react-router-dom";
 
 import { themeContext } from "../context/theme/ThemeContext";
 import { useAuth } from "../context/auth/AuthContext";
-
 const Sidebar = ({ isOpen, setIsOpen }) => {
+    const location = useLocation();
+    const isProfile = location.pathname.startsWith("/profile");
     const navigate = useNavigate();
 
     const { theme, setTheme } =
         useContext(themeContext);
 
     const { logout, user } = useAuth();
-    const location = useLocation();
 
     const navlinks = [
         {
@@ -48,6 +51,21 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             to: "/ai-composer",
             icon: Wand2Icon,
         },
+        {
+            name: "Up Comming Post",
+            to: "/upcommingpost",
+            icon: BookMarked,
+        },
+        {
+            name: "Scheduled Post",
+            to: "/scheduledpost",
+            icon: CalendarCheck,
+        },
+        {
+            name: "Admin Profile",
+            to: "/profile/changename",
+            icon: UserStar,
+        }
     ];
 
     const themeHandle = () => {
@@ -69,10 +87,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                 w-64 shrink-0
 
-                ${
-                    theme === "light"
-                        ? "bg-white border-slate-200"
-                        : "bg-[#0f0f10] border-[#ffffff15]"
+                ${theme === "light"
+                    ? "bg-white border-slate-200"
+                    : "bg-[#0f0f10] border-[#ffffff15]"
                 }
 
                 border-r
@@ -81,10 +98,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                 transition-all duration-300 ease-in-out
 
-                ${
-                    isOpen
-                        ? "translate-x-0 pointer-events-auto"
-                        : "-translate-x-full md:translate-x-0 pointer-events-none md:pointer-events-auto"
+                ${isOpen
+                    ? "translate-x-0 pointer-events-auto"
+                    : "-translate-x-full md:translate-x-0 pointer-events-none md:pointer-events-auto"
                 }
             `}
         >
@@ -107,10 +123,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                         flex items-center gap-1.5
 
-                        ${
-                            theme === "light"
-                                ? "text-slate-800"
-                                : "text-white"
+                        ${theme === "light"
+                            ? "text-slate-800"
+                            : "text-white"
                         }
                     `}
                 >
@@ -137,10 +152,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                         uppercase
                         tracking-wider
 
-                        ${
-                            theme === "light"
-                                ? "text-slate-500"
-                                : "text-slate-400"
+                        ${theme === "light"
+                            ? "text-slate-500"
+                            : "text-slate-400"
                         }
                     `}
                 >
@@ -164,14 +178,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                         const isActive =
                             location.pathname === link.to;
-
                         return (
 
                             <NavLink
                                 key={idx}
                                 to={link.to}
                                 end={link.to === "/dashboard"}
-                                onClick={() =>setIsOpen(false)}
+                                onClick={() => setIsOpen(false)}
                                 className={`
                                     flex items-center gap-3
 
@@ -183,17 +196,16 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                     transition-all duration-150
 
                                     border
+                                    
+                                    ${ isActive 
 
-                                    ${
-                                        isActive
+                                        ? "bg-red-500 text-white border-red-500"
 
-                                            ? "bg-red-500 text-white border-red-500"
+                                        : theme === "light"
 
-                                            : theme === "light"
+                                            ? "text-slate-500 hover:bg-slate-50 border-transparent hover:text-slate-700"
 
-                                                ? "text-slate-500 hover:bg-slate-50 border-transparent hover:text-slate-700"
-
-                                                : "text-slate-400 hover:bg-[#ffffff08] border-transparent hover:text-white"
+                                            : "text-slate-400 hover:bg-[#ffffff08] border-transparent hover:text-white"
                                     }
                                 `}
                             >
@@ -203,16 +215,15 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                         size-[18px]
                                         shrink-0
 
-                                        ${
-                                            isActive
+                                        ${isActive
 
-                                                ? "text-white"
+                                            ? "text-white"
 
-                                                : theme === "light"
+                                            : theme === "light"
 
-                                                    ? "text-slate-500"
+                                                ? "text-slate-500"
 
-                                                    : "text-slate-400"
+                                                : "text-slate-400"
                                         }
                                     `}
                                 />
@@ -248,10 +259,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     border-t
                     shrink-0
 
-                    ${
-                        theme === "light"
-                            ? "border-slate-100"
-                            : "border-[#ffffff10]"
+                    ${theme === "light"
+                        ? "border-slate-100"
+                        : "border-[#ffffff10]"
                     }
                 `}
             >
@@ -266,10 +276,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                         transition-colors
 
-                        ${
-                            theme === "light"
-                                ? "hover:bg-slate-50"
-                                : "hover:bg-[#ffffff08]"
+                        ${theme === "light"
+                            ? "hover:bg-slate-50"
+                            : "hover:bg-[#ffffff08]"
                         }
                     `}
                 >
@@ -310,10 +319,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 text-sm
                                 truncate
 
-                                ${
-                                    theme === "light"
-                                        ? "text-slate-800"
-                                        : "text-white"
+                                ${theme === "light"
+                                    ? "text-slate-800"
+                                    : "text-white"
                                 }
                             `}
                         >
@@ -325,10 +333,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 text-xs
                                 truncate
 
-                                ${
-                                    theme === "light"
-                                        ? "text-slate-400"
-                                        : "text-slate-500"
+                                ${theme === "light"
+                                    ? "text-slate-400"
+                                    : "text-slate-500"
                                 }
                             `}
                         >
@@ -347,12 +354,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                             transition-all duration-300
 
-                            ${
-                                theme === "dark"
+                            ${theme === "dark"
 
-                                    ? "border-[#ffffff20] text-white hover:bg-[#ffffff10]"
+                                ? "border-[#ffffff20] text-white hover:bg-[#ffffff10]"
 
-                                    : "border-slate-300 text-black hover:bg-slate-100"
+                                : "border-slate-300 text-black hover:bg-slate-100"
                             }
                         `}
                     >
@@ -386,12 +392,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                         transition-all duration-150
 
-                        ${
-                            theme === "light"
+                        ${theme === "light"
 
-                                ? "text-slate-500 hover:bg-red-50 hover:text-red-500"
+                            ? "text-slate-500 hover:bg-red-50 hover:text-red-500"
 
-                                : "text-slate-400 hover:bg-red-500/10 hover:text-red-400"
+                            : "text-slate-400 hover:bg-red-500/10 hover:text-red-400"
                         }
                     `}
                 >

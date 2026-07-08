@@ -1,6 +1,5 @@
 import axios from "axios";
-const VITE_PRODUCTION = import.meta.env.VITE_BASE_PRODUCTION_URL
-
+const VITE_PRODUCTION = import.meta.env.VITE_PRODUCTION_URL
 const api = axios.create({
     baseURL: VITE_PRODUCTION
 });

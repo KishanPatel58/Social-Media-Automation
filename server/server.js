@@ -7,7 +7,7 @@ const PORT = env.PORT;
 
 const startServer = async () => {
   try {
-    server.listen(PORT, () => console.log(`Server is Running on PORT: ${PORT}`));
+    server.listen(PORT);
     await connectDB();
     initScheduler();
   } catch (error) {

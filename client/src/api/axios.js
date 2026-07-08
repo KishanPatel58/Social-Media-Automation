@@ -1,6 +1,4 @@
 import axios from "axios";
-const Environment = import.meta.env.PRODUCT_ON
-const VITE_DEVELOPMENT = import.meta.env.VITE_BASE_DEVELOPMENT_URL
 const VITE_PRODUCTION = import.meta.env.VITE_BASE_PRODUCTION_URL
 
 const api = axios.create({

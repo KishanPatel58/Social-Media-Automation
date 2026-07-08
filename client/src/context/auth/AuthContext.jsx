@@ -34,7 +34,7 @@ const AuthContext = (props) => {
         delete api.defaults.headers.common["Authorization"];
     }
     return (
-        <authContext.Provider value={{ user, token, isLoading, login, logout, isAuthenticated: !!token }}>
+        <authContext.Provider value={{ user, token, isLoading, login, logout, isAuthenticated: !!token, setUser }}>
             {props.children}
         </authContext.Provider>
     )

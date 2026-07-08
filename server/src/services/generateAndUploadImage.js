@@ -7,8 +7,6 @@ const imageKit = require(
 const generateAndUploadImage = async (prompt) => {
 
     try {
-
-
         const imageResponse =
             await axios({
 

@@ -33,6 +33,14 @@ const accountSchema = new mongoose.Schema({
     },
     avatarUrl: {
         type: String
+    },
+    followers: {
+        type: Number,
+        default: 0
+    },
+    following: {
+        type: Number,
+        default: 0
     }
 }, { timestamps: true })
 const accountModel = mongoose.model("account", accountSchema);

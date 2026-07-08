@@ -13,6 +13,8 @@ import PublishedPost from "./pages/PublishedPost";
 import ProfileLayout from "./components/Profile/ProfileLayout";
 import ChangeName from "./pages/Admin/ChangeName";
 import ChangeTheme from "./pages/Admin/ChangeTheme";
+import RecentGeneration from "./pages/Admin/RecentGeneration";
+import Audience from "./pages/Audience";
 
 export default function App() {
 
@@ -41,6 +43,10 @@ export default function App() {
                         path="/schedule"
                         element={<Scheduler />}
                     />
+                    <Route
+                        path="/audience"
+                        element={<Audience />}
+                    />
 
                     <Route
                         path="/ai-composer"
@@ -53,6 +59,10 @@ export default function App() {
                     <Route
                         path="/scheduledpost"
                         element={<PublishedPost />}
+                    />
+                    <Route
+                        path="/getgenerations"
+                        element={<RecentGeneration />}
                     />
                     <Route
                         path="/profile"

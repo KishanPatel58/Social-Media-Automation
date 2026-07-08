@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     },
     zernioProfileId: {
         type: String
+    },
+    avatar: {
+        type: String,
+        default: ""
     }
 },{timestamps: true});
 

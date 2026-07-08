@@ -3,9 +3,8 @@ const Environment = import.meta.env.PRODUCT_ON
 const VITE_DEVELOPMENT = import.meta.env.VITE_BASE_DEVELOPMENT_URL
 const VITE_PRODUCTION = import.meta.env.VITE_BASE_PRODUCTION_URL
 
-const VITE_URL = Environment==="development" ? VITE_DEVELOPMENT : VITE_PRODUCTION
 const api = axios.create({
-    baseURL: "http://localhost:3000"
+    baseURL: VITE_PRODUCTION
 });
 api.interceptors.request.use(
     (config) => {

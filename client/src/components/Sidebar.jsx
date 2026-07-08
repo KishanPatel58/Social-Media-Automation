@@ -5,10 +5,12 @@ import {
     LayoutDashboardIcon,
     LogOut,
     Moon,
+    StickyNoteCheck,
     Sun,
     UsersIcon,
     UserStar,
     Wand2Icon,
+    LineChart
 } from "lucide-react";
 import { useContext } from "react";
 import { toast } from "react-hot-toast"
@@ -22,7 +24,6 @@ import { themeContext } from "../context/theme/ThemeContext";
 import { useAuth } from "../context/auth/AuthContext";
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const location = useLocation();
-    const isProfile = location.pathname.startsWith("/profile");
     const navigate = useNavigate();
 
     const { theme, setTheme } =
@@ -40,6 +41,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             name: "Accounts",
             to: "/accounts",
             icon: UsersIcon,
+        },
+        {
+            name: "Audience",
+            to: "/audience",
+            icon: LineChart,
         },
         {
             name: "Scheduler",
@@ -62,6 +68,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             icon: CalendarCheck,
         },
         {
+            name: "Recent Generations",
+            to: "/getgenerations",
+            icon: StickyNoteCheck,
+        },
+        {
             name: "Admin Profile",
             to: "/profile/changename",
             icon: UserStar,
@@ -76,7 +87,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 : "light"
         );
     };
-
     return (
 
         <aside
@@ -174,6 +184,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             >
 
                 {
+
                     navlinks.map((link, idx) => {
 
                         const isActive =
@@ -197,7 +208,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                                     border
                                     
-                                    ${ isActive 
+                                    ${isActive
 
                                         ? "bg-red-500 text-white border-red-500"
 
@@ -285,30 +296,28 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
                     {/* AVATAR */}
 
-                    <div
-                        className="
-                            size-8
-                            rounded-full
+                    {(user?.avatar || user?.user?.avatar) ? (<img className="size-8 rounded-full" src={user?.user?.avatar || user?.avatar} alt="profile" />) : (
+                        <div className= "size-8 rounded-full
 
-                            bg-gradient-to-br
-                            from-red-400
-                            to-pink-400
+                    bg-gradient-to-br
+                    from-red-400
+                    to-pink-400
 
-                            flex items-center justify-center
+                    flex items-center justify-center
 
-                            text-white
-                            text-sm
-                            font-medium
+                    text-white
+                    text-sm
+                    font-medium
 
-                            shrink-0
-                        "
-                    >
-                        {
-                            user?.user?.name
-                                ?.charAt(0)
-                                .toUpperCase() || "U"
-                        }
-                    </div>
+                    shrink-0
+                    "
+                        >
+                            {
+                                user?.name || user?.user?.name
+                                    ?.charAt(0)
+                                    .toUpperCase() || "U"
+                            }
+                        </div>)}
 
                     {/* USER INFO */}
 
@@ -325,7 +334,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 }
                             `}
                         >
-                            {user?.user?.name}
+                            {user?.name || user?.user?.name}
                         </div>
 
                         <div
@@ -339,7 +348,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 }
                             `}
                         >
-                            {user?.user?.email}
+                            {user?.email || user?.user?.email}
                         </div>
                     </div>
 
@@ -408,7 +417,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     </span>
                 </button>
             </div>
-        </aside>
+        </aside >
     );
 };
 

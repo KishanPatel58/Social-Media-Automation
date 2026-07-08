@@ -5,8 +5,7 @@ import {
 } from "react";
 
 import {
-  dummyGenerationData,
-  PLATFORMS,
+  PLATFORMS
 } from "../assets/assets";
 
 import {

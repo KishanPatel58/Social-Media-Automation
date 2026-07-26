@@ -9,8 +9,7 @@ import {
     Sun,
     UsersIcon,
     UserStar,
-    Wand2Icon,
-    LineChart
+    Wand2Icon
 } from "lucide-react";
 import { useContext } from "react";
 import { toast } from "react-hot-toast"
@@ -21,7 +20,8 @@ import {
 } from "react-router-dom";
 
 import { themeContext } from "../context/theme/ThemeContext";
-import { useAuth } from "../context/auth/AuthContext";
+import { authContext } from "../context/auth/AuthContext";
+import api from "../api/axios";
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -29,8 +29,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     const { theme, setTheme } =
         useContext(themeContext);
 
-    const { logout, user } = useAuth();
-
+    const { user, setUser } = useContext(authContext)
     const navlinks = [
         {
             name: "Dashboard",
@@ -41,11 +40,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             name: "Accounts",
             to: "/accounts",
             icon: UsersIcon,
-        },
-        {
-            name: "Audience",
-            to: "/audience",
-            icon: LineChart,
         },
         {
             name: "Scheduler",
@@ -87,6 +81,20 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 : "light"
         );
     };
+    const handleLogout = async () => {
+        const loadings = toast.loading("Processing...")
+        try {
+            const response = await api.get("/api/auth/logout");
+            setUser(null);
+            localStorage.removeItem("user");
+            toast.dismiss(loadings);
+            toast.success(response.data.message,{icon: '🥳'});
+            navigate("/login")
+        } catch (error) {
+            toast.dismiss(loadings)
+            toast.error(error.message || "Problem to Logout")
+        }
+    }
     return (
 
         <aside
@@ -313,8 +321,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     "
                         >
                             {
-                                user?.name || user?.user?.name
-                                    ?.charAt(0)
+                                user?.name?.charAt(0)
                                     .toUpperCase() || "U"
                             }
                         </div>)}
@@ -385,7 +392,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 {/* LOGOUT */}
 
                 <button
-                    onClick={logout}
+                    onClick={handleLogout}
                     className={`
                         mt-2
 

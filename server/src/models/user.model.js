@@ -20,9 +20,29 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: ""
+    },
+    otp: {
+        type: String,
+        default: ""
+    },
+    otpExpireAt: {
+        type: Date,
+        default: null
+    },
+    refreshToken: {
+        type: String,
+        default: null
+    },
+    refreshTokenExpireAt: {
+        type: Date,
+        default: null
+    },
+    isVerified: {
+        type: Boolean,
+        default: false
     }
-},{timestamps: true});
+}, { timestamps: true });
 
-const userModel = mongoose.model("user",userSchema);
+const userModel = mongoose.model("user", userSchema);
 
 module.exports = userModel;

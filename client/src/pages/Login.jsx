@@ -4,6 +4,7 @@ import {
     useMemo,
     useEffect
 } from "react";
+import Countdown from 'react-countdown';
 
 import {
     Link,
@@ -11,8 +12,8 @@ import {
 } from "react-router-dom";
 import { toast } from "react-hot-toast"
 import {
-    ArrowLeftIcon,
     ArrowRightIcon,
+    BadgeCheck,
     Loader2Icon,
     LockIcon,
     MailIcon,
@@ -22,20 +23,24 @@ import {
 } from "lucide-react";
 
 import { themeContext } from "../context/theme/ThemeContext";
-import { useAuth } from "../context/auth/AuthContext";
+import { authContext } from "../context/auth/AuthContext";
 import api from "../api/axios";
 
 export default function Auth() {
-
+    const renderer = ({ minutes, seconds }) => (
+        <span>
+            {String(minutes).padStart(2, "0")}:
+            {String(seconds).padStart(2, "0")}
+        </span>
+    );
     const { theme, setTheme } =
         useContext(themeContext);
 
-    const [loginState, setLoginState] =
-        useState(true);
-
+    const [formType, setFormType] = useState("login")
+    const [otp, setOtp] = useState("")
     const [name, setName] =
         useState("");
-
+    const [otpLoading, setOtpLoading] = useState(true)
     const [email, setEmail] =
         useState("");
 
@@ -46,30 +51,88 @@ export default function Auth() {
         useState(false);
 
     const navigate = useNavigate();
-    const { login, user } = useAuth()
-    const handleSubmit =
-        async (e) => {
-
-            e.preventDefault();
-
+    const { user, setUser } = useContext(authContext)
+    const handleSignup = async (e) => {
+        e.preventDefault();
+        const loadings = toast.loading("Please Wait...")
+        try {
             setLoading(true);
-            try {
-                const { data } = await api.post(`/api/auth/${loginState ? "login" : "register"}`, { name, email, password });
-                login(data, data.token);
-                toast.success("User Loggedin Successfully..")
-                navigate("/dashboard")
-            } catch (error) {
-                toast.error(error.message)
-            }
-            finally{
-                setLoading(false)
-            }
-        };
+            localStorage.setItem("formtype", "signup")
+            const response = await api.post("/api/auth/register", { name, email, password });
+            toast.dismiss(loadings);
+            setFormType("otpverify");
+            localStorage.setItem("email", email);
+            localStorage.setItem("formtype", "otpverify");
+            toast(response.data.message, { icon: '⚠️' });
+            setLoading(false)
+        } catch (error) {
+            toast.dismiss(loadings);
+            toast(error.message || "Problem to Signup", {
+                icon: '🚨'
+            })
+        }
+        finally{
+            setLoading(false)
+        }
+    }
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        const loadings = toast.loading("Please Wait...")
+        try {
+            localStorage.setItem("formtype", "login")
+            setLoading(true);
+            const response = await api.post("/api/auth/login", { email, password });
+            toast.dismiss(loadings);
+            toast(response.data.message, { icon: '🥳' });
+            navigate("/dashboard")
+            setUser(response.data.user)
+            localStorage.setItem("user", JSON.stringify(response.data.user))
+            setLoading(false)
+        } catch (error) {
+            toast.dismiss(loadings);
+            toast(error.message || "Problem to Signup", {
+                icon: '🚨'
+            })
+        }
+    }
+    const handleResendOtp = async () => {
+        const loadings = toast.loading("Please Wait...")
+        try {
+            setOtpLoading(true)
+            localStorage.setItem("formtype", "otpverify")
+            const response = await api.post("/api/auth/resendOtpverifyemail", {email:localStorage.getItem("email")});
+            toast.dismiss(loadings)
+            toast(response.data.message, { icon: '🥳' });
 
-    useEffect(()=>{
-        if(user)navigate("/dashboard")
-    },[user])
-
+        } catch (error) {
+            toast.dismiss(loadings);
+            toast(error.message || "Problem to Resend Otp", {
+                icon: '🚨'
+            })
+        }
+    }
+    const handleOtpVerify = async (e) => {
+        e.preventDefault();
+        const loadings = toast.loading("Please Wait...")
+        try {
+            setLoading(true);
+            localStorage.setItem("formtype", "otpverify")
+            const response = await api.post("/api/auth/verifyemailandcreateuser", { email, otp });
+            toast.dismiss(loadings);
+            localStorage.removeItem("email");
+            localStorage.setItem("formtype", "login");
+            toast(response.data.message, { icon: '😃' });
+            navigate("/dashboard")
+            setUser(response.data.user)
+            localStorage.setItem("user", JSON.stringify(response.data.user))
+            setLoading(false)
+        } catch (error) {
+            toast.dismiss(loadings);
+            toast(error.message || "Problem to Signup", {
+                icon: '🚨'
+            })
+        }
+    }
     const themeHandle = () => {
 
         const newTheme =
@@ -84,6 +147,27 @@ export default function Auth() {
             newTheme
         );
     };
+    useEffect(() => {
+        const currentFormType = localStorage.getItem("formtype");
+        if (!currentFormType) {
+            return
+        } else {
+            setFormType(currentFormType)
+        }
+    }, [])
+    useEffect(() => {
+        const currentEmail = localStorage.getItem("email");
+        if (!currentEmail) {
+            return
+        } else {
+            setEmail(currentEmail)
+        }
+    }, [])
+    useEffect(()=>{
+        if(localStorage.getItem("user")){
+            navigate("/dashboard")
+        }
+    },[])
     const stars = useMemo(() => {
 
         return [...Array(60)].map((_, i) => ({
@@ -342,11 +426,11 @@ export default function Auth() {
                             `}
                         >
                             {
-                                loginState
+                                formType === "login"
 
                                     ? "Sign in to your account"
 
-                                    : "Create your new account"
+                                    : formType === "signup" ? "Create your new account" : "Verify Your Email"
                             }
                         </p>
                     </div>
@@ -354,14 +438,14 @@ export default function Auth() {
                     {/* FORM */}
 
                     <form
-                        onSubmit={handleSubmit}
+                        onSubmit={formType === "login" ? handleLogin : formType === "signup" ? handleSignup : handleOtpVerify}
                         className="space-y-5"
                     >
 
                         {/* NAME */}
 
                         {
-                            !loginState && (
+                            (formType !== "login" && formType !== "otpverify") && (
 
                                 <div>
 
@@ -436,29 +520,32 @@ export default function Auth() {
                             )
                         }
 
-                        {/* EMAIL */}
+                        {
+                            (formType === "login" || formType === "signup") && (
+                                <>
+                                    {/* EMAIL */}
 
-                        <div>
+                                    <div>
 
-                            <label
-                                className={`
+                                        <label
+                                            className={`
                                     block
                                     mb-2
                                     text-sm
 
                                     ${theme === "light"
-                                        ? "text-slate-700"
-                                        : "text-slate-300"
-                                    }
+                                                    ? "text-slate-700"
+                                                    : "text-slate-300"
+                                                }
                                 `}
-                            >
-                                Email Address
-                            </label>
+                                        >
+                                            Email Address
+                                        </label>
 
-                            <div className="relative">
+                                        <div className="relative">
 
-                                <MailIcon
-                                    className={`
+                                            <MailIcon
+                                                className={`
                                         absolute
                                         left-4
                                         top-1/2
@@ -467,23 +554,143 @@ export default function Auth() {
                                         size-4
 
                                         ${theme === "light"
-                                            ? "text-slate-400"
-                                            : "text-slate-500"
-                                        }
+                                                        ? "text-slate-400"
+                                                        : "text-slate-500"
+                                                    }
                                     `}
-                                />
+                                            />
 
-                                <input
-                                    type="email"
-                                    required
-                                    placeholder="you@example.com"
-                                    value={email}
-                                    onChange={(e) =>
-                                        setEmail(
-                                            e.target.value
-                                        )
-                                    }
-                                    className={`
+                                            <input
+                                                type="email"
+                                                required
+                                                placeholder="you@example.com"
+                                                value={email}
+                                                onChange={(e) =>
+                                                    setEmail(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className={`
+                                        w-full
+
+                                        pl-11
+                                        pr-4
+                                        py-3
+
+                                        rounded-full
+
+                                        border
+
+                                        outline-none
+
+                                        transition-all duration-300
+
+                                        ${theme === "light"
+
+                                                        ? "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-slate-300"
+
+                                                        : "bg-[#1a1a1a] border-[#ffffff10] text-white placeholder-slate-500 focus:border-[#ffffff20]"
+                                                    }
+                                    `}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* PASSWORD */}
+
+                                    <div>
+
+                                        <label
+                                            className={`
+                                    block
+                                    mb-2
+                                    text-sm
+
+                                    ${theme === "light"
+                                                    ? "text-slate-700"
+                                                    : "text-slate-300"
+                                                }
+                                `}
+                                        >
+                                            Password
+                                        </label>
+
+                                        <div className="relative">
+
+                                            <LockIcon
+                                                className={`
+                                        absolute
+                                        left-4
+                                        top-1/2
+                                        -translate-y-1/2
+
+                                        size-4
+
+                                        ${theme === "light"
+                                                        ? "text-slate-400"
+                                                        : "text-slate-500"
+                                                    }
+                                    `}
+                                            />
+
+                                            <input
+                                                type="password"
+                                                required
+                                                placeholder="••••••••"
+                                                value={password}
+                                                onChange={(e) =>
+                                                    setPassword(
+                                                        e.target.value
+                                                    )
+                                                }
+                                                className={`
+                                        w-full
+
+                                        pl-11
+                                        pr-4
+                                        py-3
+
+                                        rounded-full
+
+                                        border
+
+                                        outline-none
+
+                                        transition-all duration-300
+
+                                        ${theme === "light"
+
+                                                        ? "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-slate-300"
+
+                                                        : "bg-[#1a1a1a] border-[#ffffff10] text-white placeholder-slate-500 focus:border-[#ffffff20]"
+                                                    }
+                                    `}
+                                            />
+                                        </div>
+                                    </div>
+                                </>
+                            )
+                        }
+                        {
+                            formType === "otpverify" && (
+                                <div className="relative">
+
+                                    <BadgeCheck
+                                        className={`
+                                        absolute
+                                        left-4
+                                        top-1/2
+                                        -translate-y-1/2
+
+                                        size-4
+
+                                        ${theme === "light"
+                                                ? "text-slate-400"
+                                                : "text-slate-500"
+                                            }
+                                    `}
+                                    />
+                                    <input type="text" placeholder="Enter Verification Code" value={otp} onChange={(e) => setOtp(e.target.value)} className={`
                                         w-full
 
                                         pl-11
@@ -504,84 +711,10 @@ export default function Auth() {
 
                                             : "bg-[#1a1a1a] border-[#ffffff10] text-white placeholder-slate-500 focus:border-[#ffffff20]"
                                         }
-                                    `}
-                                />
-                            </div>
-                        </div>
-
-                        {/* PASSWORD */}
-
-                        <div>
-
-                            <label
-                                className={`
-                                    block
-                                    mb-2
-                                    text-sm
-
-                                    ${theme === "light"
-                                        ? "text-slate-700"
-                                        : "text-slate-300"
-                                    }
-                                `}
-                            >
-                                Password
-                            </label>
-
-                            <div className="relative">
-
-                                <LockIcon
-                                    className={`
-                                        absolute
-                                        left-4
-                                        top-1/2
-                                        -translate-y-1/2
-
-                                        size-4
-
-                                        ${theme === "light"
-                                            ? "text-slate-400"
-                                            : "text-slate-500"
-                                        }
-                                    `}
-                                />
-
-                                <input
-                                    type="password"
-                                    required
-                                    placeholder="••••••••"
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(
-                                            e.target.value
-                                        )
-                                    }
-                                    className={`
-                                        w-full
-
-                                        pl-11
-                                        pr-4
-                                        py-3
-
-                                        rounded-full
-
-                                        border
-
-                                        outline-none
-
-                                        transition-all duration-300
-
-                                        ${theme === "light"
-
-                                            ? "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400 focus:border-slate-300"
-
-                                            : "bg-[#1a1a1a] border-[#ffffff10] text-white placeholder-slate-500 focus:border-[#ffffff20]"
-                                        }
-                                    `}
-                                />
-                            </div>
-                        </div>
-
+                                    `} />
+                                </div>
+                            )
+                        }
                         {/* SUBMIT */}
 
                         <button
@@ -632,9 +765,9 @@ export default function Auth() {
                                     : (
                                         <>
                                             {
-                                                loginState
+                                                formType === "login"
                                                     ? "Sign In"
-                                                    : "Create Account"
+                                                    : formType === "signup" ? "Create Account" : "Verify Email"
                                             }
 
                                             <ArrowRightIcon
@@ -662,7 +795,7 @@ export default function Auth() {
                     >
 
                         {
-                            loginState
+                            formType === "login"
 
                                 ? (
                                     <>
@@ -670,8 +803,8 @@ export default function Auth() {
 
                                         <button
                                             onClick={() =>
-                                                setLoginState(
-                                                    false
+                                                setFormType(
+                                                    "signup"
                                                 )
                                             }
                                             className="
@@ -684,14 +817,14 @@ export default function Auth() {
                                     </>
                                 )
 
-                                : (
+                                : formType === "signup" ? (
                                     <>
                                         Already have an account?{" "}
 
                                         <button
                                             onClick={() =>
-                                                setLoginState(
-                                                    true
+                                                setFormType(
+                                                    "login"
                                                 )
                                             }
                                             className="
@@ -703,6 +836,28 @@ export default function Auth() {
                                         </button>
                                     </>
                                 )
+                                    : (
+                                        <>
+                                            <div className="flex items-center justify-center gap-2">
+            
+                                                {otpLoading && (<Countdown
+                                                onComplete={()=>setOtpLoading(false)}  renderer={renderer} date={Date.now() + 20000} />)}
+                                                {!otpLoading && (
+                                                    <>
+                                                    Resend Otp?
+                                                    <button
+                                                    onClick={() => handleResendOtp()}
+                                                    className="
+                                                text-red-500
+                                                hover:text-red-400
+                                            "
+                                                >
+                                                    Click
+                                                </button>
+                                                </>)}
+                                            </div>
+                                        </>
+                                    )
                         }
                     </div>
                 </div>

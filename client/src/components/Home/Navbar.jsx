@@ -12,11 +12,11 @@ import {
 } from "react";
 
 import { themeContext } from "../../context/theme/ThemeContext";
-import { useAuth } from "../../context/auth/AuthContext";
+import { authContext } from "../../context/auth/AuthContext";
 
 export default function Navbar() {
 
-    const { user } = useAuth();
+    const { user } = useContext(authContext)
 
     const { theme, setTheme } = useContext(themeContext);
 

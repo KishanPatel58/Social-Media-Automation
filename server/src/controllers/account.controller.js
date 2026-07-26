@@ -18,6 +18,12 @@ const getAccounts = async (req, res) => {
 const addAccount = async (req, res) => {
     try {
         const { platform, handle, avatarUrl } = req.body;
+        if(!platform || !handle || !avatarUrl){
+            return res.status(401).json({
+                success: false,
+                message: "All Fields Are required."
+            })
+        }
         const account = await accountModel.create({ user: req.user._id, platform, handle, avatarUrl });
         res.status(201).json(account)
     } catch (error) {

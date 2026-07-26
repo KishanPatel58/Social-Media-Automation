@@ -155,7 +155,7 @@ export default function CTA() {
 
                             {/* SECONDARY BUTTON */}
 
-                            <a
+                            {/* <a
                                 href="#pricing"
                                 className={`
                                     rounded-full
@@ -175,12 +175,12 @@ export default function CTA() {
                                 `}
                             >
                                 View Pricing
-                            </a>
+                            </a> */}
                         </div>
 
                         {/* FOOTER TEXT */}
 
-                        <p
+                        {/* <p
                             className={`
                                 mt-6 text-xs transition-all
 
@@ -192,7 +192,7 @@ export default function CTA() {
                             `}
                         >
                             No credit card required · Cancel anytime
-                        </p>
+                        </p> */}
                     </div>
                 </div>
             </div>

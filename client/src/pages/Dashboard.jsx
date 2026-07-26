@@ -16,12 +16,13 @@ import {
 import { themeContext } from "../context/theme/ThemeContext";
 import api from "../api/axios";
 import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
 
     const { theme } =
         useContext(themeContext);
-
+    const navigate = useNavigate()
     const [stats, setStats] = useState({
         scheduled: 0,
         published: 0,
@@ -30,7 +31,11 @@ const Dashboard = () => {
 
     const [activities, setActivities] =
         useState([]);
-
+    useEffect(()=>{
+        if(!localStorage.getItem("user")){
+            navigate("/login")
+        }
+    },[])
     useEffect(() => {
 
         const fetchDashboardData =

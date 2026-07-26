@@ -99,27 +99,29 @@ const Scheduler = () => {
   };
   return (
 
-    <div
-      className="
+    <div className="h-full w-full flex items-center justify-center px-20">
+      <div
+        className="
         flex flex-col
         lg:flex-row
         gap-6
         h-full
+        w-full
       "
-    >
-
-      {/* COMPOSE */}
-
-      <div
-        className="
-          w-full
-          lg:w-[460px]
-          shrink-0
-        "
       >
 
+        {/* COMPOSE */}
+
         <div
-          className={`
+          className="
+          !w-full
+          lg:w-[460px]
+          
+        "
+        >
+
+          <div
+            className={`
             rounded-2xl
             border
             p-6
@@ -128,82 +130,82 @@ const Scheduler = () => {
 
             ${theme === "light"
 
-              ? "bg-white border-slate-200"
+                ? "bg-white border-slate-200"
 
-              : "bg-[#111111] border-[#ffffff10]"
-            }
+                : "bg-[#111111] border-[#ffffff10]"
+              }
           `}
-        >
+          >
 
-          <div
-            className="
+            <div
+              className="
               flex items-center
               gap-2
               mb-6
             "
-          >
+            >
 
-            <h2
-              className={`
+              <h2
+                className={`
                 text-lg
 
                 ${theme === "light"
-                  ? "text-slate-700"
-                  : "text-white"
-                }
+                    ? "text-slate-700"
+                    : "text-white"
+                  }
               `}
+              >
+                Compose Post
+              </h2>
+            </div>
+
+            <form
+              onSubmit={handleSchedule}
+              className="space-y-5"
             >
-              Compose Post
-            </h2>
-          </div>
 
-          <form
-            onSubmit={handleSchedule}
-            className="space-y-5"
-          >
+              {/* PLATFORMS */}
 
-            {/* PLATFORMS */}
+              <div>
 
-            <div>
-
-              <label
-                className={`
+                <label
+                  className={`
                   block
                   text-xs
                   uppercase
                   mb-2
 
                   ${theme === "light"
-                    ? "text-slate-500"
-                    : "text-slate-400"
-                  }
+                      ? "text-slate-500"
+                      : "text-slate-400"
+                    }
                 `}
-              >
-                Platforms
-              </label>
+                >
+                  Platforms
+                </label>
 
-              <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3">
 
-                {
-                  PLATFORMS.map(
-                    (platform, idx) => {
+                  {
+                    PLATFORMS.map(
+                      (platform, idx) => {
 
-                      const active =
-                        selectedPlatforms.includes(
-                          platform.id
-                        );
+                        const active =
+                          selectedPlatforms.includes(
+                            platform.id
+                          );
 
-                      return (
+                        return (
 
-                        <button
-                          key={idx}
-                          type="button"
-                          onClick={() =>
-                            togglePlatform(
-                              platform.id
-                            )
-                          }
-                          className={`
+                          <button
+                            key={idx}
+                            type="button"
+                            onClick={() =>
+                              togglePlatform(
+                                platform.id
+                              )
+                            }
+                            className={`
                             flex items-center
                             gap-1.5
 
@@ -215,59 +217,59 @@ const Scheduler = () => {
 
                             ${active
 
-                              ? "bg-red-50 border-red-300 text-red-500 scale-105"
+                                ? "bg-red-50 border-red-300 text-red-500 scale-105"
 
-                              : theme === "light"
+                                : theme === "light"
 
-                                ? "border-slate-200 text-slate-500 hover:border-slate-300"
+                                  ? "border-slate-200 text-slate-500 hover:border-slate-300"
 
-                                : "border-[#ffffff12] text-slate-400 hover:border-[#ffffff25] hover:bg-[#1a1a1a]"
-                            }
+                                  : "border-[#ffffff12] text-slate-400 hover:border-[#ffffff25] hover:bg-[#1a1a1a]"
+                              }
                           `}
-                        >
+                          >
 
-                          <platform.icon
-                            className="size-4.5"
-                          />
-                        </button>
-                      );
-                    }
-                  )
-                }
+                            <platform.icon
+                              className="size-4.5"
+                            />
+                          </button>
+                        );
+                      }
+                    )
+                  }
+                </div>
               </div>
-            </div>
 
-            {/* CONTENT */}
+              {/* CONTENT */}
 
-            <div>
+              <div>
 
-              <label
-                className={`
+                <label
+                  className={`
                   block
                   text-xs
                   uppercase
                   mb-2
 
                   ${theme === "light"
-                    ? "text-slate-500"
-                    : "text-slate-400"
-                  }
+                      ? "text-slate-500"
+                      : "text-slate-400"
+                    }
                 `}
-              >
-                Content
-              </label>
+                >
+                  Content
+                </label>
 
-              <textarea
-                required
-                rows={5}
-                value={content}
-                onChange={(e) =>
-                  setContent(
-                    e.target.value
-                  )
-                }
-                placeholder="What do you want to share today ?"
-                className={`
+                <textarea
+                  required
+                  rows={5}
+                  value={content}
+                  onChange={(e) =>
+                    setContent(
+                      e.target.value
+                    )
+                  }
+                  placeholder="What do you want to share today ?"
+                  className={`
                   w-full
 
                   px-5 py-4
@@ -283,15 +285,15 @@ const Scheduler = () => {
 
                   ${theme === "light"
 
-                    ? "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400"
+                      ? "bg-slate-50 border-slate-200 text-slate-900 placeholder-slate-400"
 
-                    : "bg-[#1a1a1a] border-[#ffffff12] text-white placeholder-slate-500"
-                  }
+                      : "bg-[#1a1a1a] border-[#ffffff12] text-white placeholder-slate-500"
+                    }
                 `}
-              />
+                />
 
-              <div
-                className={`
+                <div
+                  className={`
                   text-right
                   text-xs
                   mt-1
@@ -299,46 +301,46 @@ const Scheduler = () => {
 
                   ${content.length > 270
 
-                    ? "text-red-500"
+                      ? "text-red-500"
 
-                    : theme === "light"
+                      : theme === "light"
 
-                      ? "text-slate-400"
+                        ? "text-slate-400"
 
-                      : "text-slate-500"
-                  }
+                        : "text-slate-500"
+                    }
                 `}
-              >
-                {content.length}/280
+                >
+                  {content.length}/280
+                </div>
               </div>
-            </div>
 
-            {/* MEDIA */}
+              {/* MEDIA */}
 
-            <div>
+              <div>
 
-              <label
-                className={`
+                <label
+                  className={`
                   block
                   text-xs
                   uppercase
                   mb-2
 
                   ${theme === "light"
-                    ? "text-slate-500"
-                    : "text-slate-400"
-                  }
+                      ? "text-slate-500"
+                      : "text-slate-400"
+                    }
                 `}
-              >
-                Media (optional)
-              </label>
+                >
+                  Media (optional)
+                </label>
 
-              {
-                mediaFile
+                {
+                  mediaFile
 
-                  ? (
-                    <div
-                      className={`
+                    ? (
+                      <div
+                        className={`
                         relative
                         rounded-xl
                         overflow-hidden
@@ -346,53 +348,53 @@ const Scheduler = () => {
 
                         ${theme === "light"
 
-                          ? "border-slate-200 bg-slate-50"
+                            ? "border-slate-200 bg-slate-50"
 
-                          : "border-[#ffffff12] bg-[#1a1a1a]"
-                        }
+                            : "border-[#ffffff12] bg-[#1a1a1a]"
+                          }
                       `}
-                    >
+                      >
 
-                      {
-                        mediaFile.type.startsWith(
-                          "image/"
-                        )
+                        {
+                          mediaFile.type.startsWith(
+                            "image/"
+                          )
 
-                          ? (
-                            <img
-                              src={URL.createObjectURL(
-                                mediaFile
-                              )}
-                              alt="preview"
-                              className="
+                            ? (
+                              <img
+                                src={URL.createObjectURL(
+                                  mediaFile
+                                )}
+                                alt="preview"
+                                className="
                                 w-full
                                 h-40
                                 object-cover
                               "
-                            />
-                          )
+                              />
+                            )
 
-                          : (
-                            <video
-                              controls
-                              src={URL.createObjectURL(
-                                mediaFile
-                              )}
-                              className="
+                            : (
+                              <video
+                                controls
+                                src={URL.createObjectURL(
+                                  mediaFile
+                                )}
+                                className="
                                 w-full
                                 h-40
                                 object-cover
                               "
-                            />
-                          )
-                      }
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setMediaFile(null)
+                              />
+                            )
                         }
-                        className="
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setMediaFile(null)
+                          }
+                          className="
                           absolute
                           top-2 right-2
 
@@ -407,18 +409,18 @@ const Scheduler = () => {
 
                           flex items-center justify-center
                         "
-                      >
+                        >
 
-                        <XIcon
-                          className="size-3.5"
-                        />
-                      </button>
-                    </div>
-                  )
+                          <XIcon
+                            className="size-3.5"
+                          />
+                        </button>
+                      </div>
+                    )
 
-                  : (
-                    <label
-                      className={`
+                    : (
+                      <label
+                        className={`
                         flex items-center justify-center
                         gap-2
 
@@ -433,102 +435,102 @@ const Scheduler = () => {
 
                         ${theme === "light"
 
-                          ? "border-slate-200 hover:border-red-300 hover:bg-red-50/30"
+                            ? "border-slate-200 hover:border-red-300 hover:bg-red-50/30"
 
-                          : "border-[#ffffff12] hover:border-red-500/30 hover:bg-[#1a1a1a]"
-                        }
+                            : "border-[#ffffff12] hover:border-red-500/30 hover:bg-[#1a1a1a]"
+                          }
                       `}
-                    >
+                      >
 
-                      <span
-                        className={`
+                        <span
+                          className={`
                           text-sm
 
                           ${theme === "light"
 
-                            ? "text-slate-500"
+                              ? "text-slate-500"
 
-                            : "text-slate-400"
-                          }
+                              : "text-slate-400"
+                            }
                         `}
-                      >
-                        Click to upload image or video
-                      </span>
+                        >
+                          Click to upload image or video
+                        </span>
 
-                      <input
-                        hidden
-                        type="file"
-                        accept="image/*,video/*"
-                        onChange={(e) =>
-                          e.target.files?.[0]
-                          &&
-                          setMediaFile(
-                            e.target.files[0]
-                          )
-                        }
-                      />
-                    </label>
-                  )
-              }
-            </div>
+                        <input
+                          hidden
+                          type="file"
+                          accept="image/*,video/*"
+                          onChange={(e) =>
+                            e.target.files?.[0]
+                            &&
+                            setMediaFile(
+                              e.target.files[0]
+                            )
+                          }
+                        />
+                      </label>
+                    )
+                }
+              </div>
 
-            {/* DATE & TIME */}
+              {/* DATE & TIME */}
 
-            <div
-              className="
+              <div
+                className="
                 grid
                 grid-cols-1
                 sm:grid-cols-2
                 gap-3
               "
-            >
+              >
 
-              {/* DATE */}
+                {/* DATE */}
 
-              <div>
+                <div>
 
-                <label
-                  className={`
+                  <label
+                    className={`
                     block
                     text-xs
                     uppercase
                     mb-2
 
                     ${theme === "light"
-                      ? "text-slate-500"
-                      : "text-slate-400"
-                    }
+                        ? "text-slate-500"
+                        : "text-slate-400"
+                      }
                   `}
-                >
-                  Date
-                </label>
+                  >
+                    Date
+                  </label>
 
-                <div className="relative">
+                  <div className="relative">
 
-                  <CalendarIcon
-                    className={`
+                    <CalendarIcon
+                      className={`
                       size-4
                       absolute
                       left-3 top-1/2
                       -translate-y-1/2
 
                       ${theme === "light"
-                        ? "text-slate-400"
-                        : "text-slate-500"
-                      }
+                          ? "text-slate-400"
+                          : "text-slate-500"
+                        }
                     `}
-                  />
+                    />
 
-                  <input
-                    required
-                    type="date"
-                    value={scheduledDate}
-                    onChange={(e) =>
-                      setScheduledDate(
-                        e.target.value
-                      )
-                    }
-                    className={`
+                    <input
+                      required
+                      type="date"
+                      value={scheduledDate}
+                      onChange={(e) =>
+                        setScheduledDate(
+                          e.target.value
+                        )
+                      }
+                      className={`
                       w-full
 
                       pl-10 pr-4 py-2.5
@@ -541,61 +543,61 @@ const Scheduler = () => {
 
                       ${theme === "light"
 
-                        ? "bg-slate-50 border-slate-200 text-slate-900"
+                          ? "bg-slate-50 border-slate-200 text-slate-900"
 
-                        : "bg-[#1a1a1a] border-[#ffffff12] text-white"
-                      }
+                          : "bg-[#1a1a1a] border-[#ffffff12] text-white"
+                        }
                     `}
-                  />
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* TIME */}
+                {/* TIME */}
 
-              <div>
+                <div>
 
-                <label
-                  className={`
+                  <label
+                    className={`
                     block
                     text-xs
                     uppercase
                     mb-2
 
                     ${theme === "light"
-                      ? "text-slate-500"
-                      : "text-slate-400"
-                    }
+                        ? "text-slate-500"
+                        : "text-slate-400"
+                      }
                   `}
-                >
-                  Time
-                </label>
+                  >
+                    Time
+                  </label>
 
-                <div className="relative">
+                  <div className="relative">
 
-                  <ClockIcon
-                    className={`
+                    <ClockIcon
+                      className={`
                       size-4
                       absolute
                       left-3 top-1/2
                       -translate-y-1/2
 
                       ${theme === "light"
-                        ? "text-slate-400"
-                        : "text-slate-500"
-                      }
+                          ? "text-slate-400"
+                          : "text-slate-500"
+                        }
                     `}
-                  />
+                    />
 
-                  <input
-                    required
-                    type="time"
-                    value={scheduledTime}
-                    onChange={(e) =>
-                      setScheduledTime(
-                        e.target.value
-                      )
-                    }
-                    className={`
+                    <input
+                      required
+                      type="time"
+                      value={scheduledTime}
+                      onChange={(e) =>
+                        setScheduledTime(
+                          e.target.value
+                        )
+                      }
+                      className={`
                       w-full
 
                       pl-10 pr-4 py-2.5
@@ -608,22 +610,22 @@ const Scheduler = () => {
 
                       ${theme === "light"
 
-                        ? "bg-slate-50 border-slate-200 text-slate-900"
+                          ? "bg-slate-50 border-slate-200 text-slate-900"
 
-                        : "bg-[#1a1a1a] border-[#ffffff12] text-white"
-                      }
+                          : "bg-[#1a1a1a] border-[#ffffff12] text-white"
+                        }
                     `}
-                  />
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* SUBMIT */}
+              {/* SUBMIT */}
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="
+              <button
+                type="submit"
+                disabled={loading}
+                className="
                 w-full
 
                 flex items-center justify-center
@@ -640,15 +642,15 @@ const Scheduler = () => {
 
                 rounded-lg
               "
-            >
+              >
 
-              {
-                loading
+                {
+                  loading
 
-                  ? (
-                    <>
-                      <div
-                        className="
+                    ? (
+                      <>
+                        <div
+                          className="
                           size-4
                           border-2
                           border-white
@@ -656,45 +658,46 @@ const Scheduler = () => {
                           rounded-full
                           animate-spin
                         "
-                      />
+                        />
 
-                      Scheduling..
-                    </>
-                  )
+                        Scheduling..
+                      </>
+                    )
 
-                  : (
-                    <>
-                      Schedule Post
+                    : (
+                      <>
+                        Schedule Post
 
-                      <ArrowRightIcon
-                        className="size-4"
-                      />
-                    </>
-                  )
-              }
-            </button>
-          </form>
+                        <ArrowRightIcon
+                          className="size-4"
+                        />
+                      </>
+                    )
+                }
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
 
-      {/* QUEUES */}
+        {/* QUEUES */}
 
-      <div
-        className="
+        <div
+          className="
           flex-1
           flex flex-col
           gap-6
           min-w-0
         "
-      >
+        >
 
-        {/* UPCOMING */}
+          {/* UPCOMING */}
 
-        
 
-        {/* PUBLISHED */}
 
-        
+          {/* PUBLISHED */}
+
+
+        </div>
       </div>
     </div>
   );

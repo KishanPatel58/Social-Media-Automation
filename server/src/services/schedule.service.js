@@ -3,6 +3,7 @@ const postModel = require("../models/post.model");
 const accountModel = require("../models/account.model");
 const zernio = require("../config/zernio/zernio");
 const activityModel = require("../models/activity.model");
+const userModel = require("../models/user.model");
 
 const initScheduler = async () => {
     cron.schedule("* * * * *", async () => {
@@ -54,7 +55,7 @@ const initScheduler = async () => {
                     await activityModel.create({
                         user: post.user,
                         actionType: "POST_PUBLISHED",
-                        description: `Published post to ${accounts.map((a)=>a.platform).join(", ")}`,
+                        description: `Published post to ${accounts.map((a) => a.platform).join(", ")}`,
                         relatedPost: post._id
                     })
                 } catch (error) {
@@ -63,7 +64,7 @@ const initScheduler = async () => {
                     await post.save();
                 }
             }
-            if(postsToPublish.length > 0){
+            if (postsToPublish.length > 0) {
                 console.log(`Evaluated ${postsToPublish.length} posts at ${now.toISOString()}`)
             }
         } catch (error) {
@@ -72,4 +73,21 @@ const initScheduler = async () => {
     })
 }
 
-module.exports = {initScheduler}
+const initRefreshTokenExpire = async () => {
+    cron.schedule("*/13 * * * *", async () => {
+        const users = await userModel.find();
+        
+        for (const user of users) {
+
+            if (
+                user.refreshTokenExpireAt &&
+                user.refreshTokenExpireAt < Date.now()
+            ) {
+                user.refreshToken = null;
+                user.refreshTokenExpireAt = null;
+                await user.save();
+            }
+        }
+    });
+}
+module.exports = { initScheduler, initRefreshTokenExpire }

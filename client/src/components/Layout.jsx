@@ -14,7 +14,7 @@ import {
 import { MenuIcon } from "lucide-react";
 
 import { themeContext } from "../context/theme/ThemeContext";
-import { useAuth } from "../context/auth/AuthContext";
+import { authContext } from "../context/auth/AuthContext";
 
 const pagetitle = {
     "/dashboard": "Dashboard",
@@ -42,7 +42,7 @@ const Layout = () => {
         isMobileMenuOpen,
         setIsMobileMenuOpen,
     ] = useState(false);
-    const { isAuthenticated, isLoading } = useAuth();
+    const { isAuthenticated, isLoading } = useContext(authContext)
     if (isLoading) {
         return (
             <div className="flex h-screen items-center justify-center bg-slate-50">

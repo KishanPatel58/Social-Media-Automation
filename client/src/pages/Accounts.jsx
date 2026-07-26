@@ -36,7 +36,7 @@ const Accounts = () => {
     ] = useState(false);
 
     const fetchAccounts = async (
-        isSync = false,
+        isSync = true,
         platform,
         successMessage
     ) => {

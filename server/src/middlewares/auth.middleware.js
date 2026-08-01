@@ -4,7 +4,7 @@ const userModel = require("../models/user.model");
 
 const protect = async (req, res, next) => {
     try {
-        console.log("1. Middleware started");
+        
         const accessToken = req.cookies.token;
         if (!accessToken) {
             return res.status(401).json({
@@ -14,10 +14,10 @@ const protect = async (req, res, next) => {
         }
 
         try {
-            console.log("3. Verifying access token");
+            
             // Access token is valid
             const decoded = jwt.verify(accessToken, ENV.JWT_ACCESS_SECRET);
-            console.log("4. Access token valid");
+            
             const user = await userModel.findById(decoded.user._id);
 
             if (!user) {
@@ -26,30 +26,26 @@ const protect = async (req, res, next) => {
                     message: "User not found."
                 });
             }
-            console.log("5. User found");
+            
             req.user = user;
             return next();
 
         } catch (err) {
             // Access token expired
-            console.log("6.", err.name);
+            
             if (err.name !== "TokenExpiredError") {
-                console.log("7. Invalid token");
+                
                 return res.status(401).json({
                     success: false,
                     message: "Invalid access token."
                 });
             }
-            console.log("8. Token expired");
+            
             // Decode expired token to get user id
             const decoded = jwt.decode(accessToken);
-            console.log("9.", decoded);
+            
             const user = await userModel.findById(decoded.user._id);
-            console.log("10. User:", user?.email);
-
-            console.log("11. Refresh token:", !!user.refreshToken);
-
-            console.log("12. Expire At:", user.refreshTokenExpireAt);
+            
             if (!user) {
                 return res.status(401).json({
                     success: false,
@@ -83,7 +79,7 @@ const protect = async (req, res, next) => {
 
             // Verify refresh token
             jwt.verify(user.refreshToken, ENV.JWT_REFRESH_SECRET);
-            console.log("13. Refresh verified");
+            
             // Generate new access token
             const newAccessToken = jwt.sign(
                 {
@@ -99,7 +95,7 @@ const protect = async (req, res, next) => {
                     expiresIn: "15m"
                 }
             );
-            console.log("14. New access token created");
+            
             res.cookie("token", newAccessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
@@ -107,7 +103,6 @@ const protect = async (req, res, next) => {
                 maxAge: 15 * 60 * 1000
             });
 
-            console.log("15. Cookie sent");
             req.user = user;
             
             next();

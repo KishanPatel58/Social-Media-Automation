@@ -74,7 +74,7 @@ const initScheduler = async () => {
 }
 
 const initRefreshTokenExpire = async () => {
-    cron.schedule("*/13 * * * *", async () => {
+    cron.schedule("0 0 * * *", async () => {
         const users = await userModel.find();
         
         for (const user of users) {
@@ -90,4 +90,5 @@ const initRefreshTokenExpire = async () => {
         }
     });
 }
+
 module.exports = { initScheduler, initRefreshTokenExpire }

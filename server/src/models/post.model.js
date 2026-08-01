@@ -14,11 +14,11 @@ const postSchema = new mongoose.Schema({
     },
     mediaType: {
         type: String,
-        enum: ['image', 'video', 'audio']
+        enum: ['image', 'video']
     },
     platforms: [{
         type: String,
-        enum: ["twitter", "linkedin", "instagram", "facebook", "facebook_page", "linkedin_page", "instagram_business"]
+        enum: ["linkedin", "instagram", "linkedin_page", "instagram_business"]
     }],
     scheduledFor: {
         type: Date,

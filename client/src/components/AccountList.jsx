@@ -15,7 +15,6 @@ const AccountList = ({
     accounts = [],
     onDisconnect = () => {},
 }) => {
-
     const { theme } =
         useContext(themeContext);
 

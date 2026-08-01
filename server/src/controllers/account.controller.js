@@ -12,7 +12,6 @@ const getAccounts = async (req, res) => {
         return res.status(500).json({ message: `Error: ${error.message}` })
     }
 }
-
 // Add account
 // Endpoint POST /api/accounts
 const addAccount = async (req, res) => {

@@ -5,7 +5,6 @@ const userModel = require("../models/user.model");
 // check user have must have zernio profile
 const getOrCreateZernioProfile = async (user) => {
     try {
-
         // If the user already has a Zernio profile, use it.
         if (user.zernioProfileId) {
             return user.zernioProfileId;

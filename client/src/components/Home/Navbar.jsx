@@ -156,7 +156,7 @@ export default function Navbar() {
                         </Link>
 
                         <Link
-                            to="/login"
+                            to={user?"/dashboard":"/login"}
                             className="
                                 flex items-center gap-1.5
                                 text-sm

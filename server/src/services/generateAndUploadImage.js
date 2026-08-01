@@ -9,7 +9,6 @@ const generateAndUploadImage = async (prompt) => {
     try {
         const imageResponse =
             await axios({
-
                 url:
 `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}`,
 
@@ -18,7 +17,6 @@ const generateAndUploadImage = async (prompt) => {
                 responseType:
                     "arraybuffer",
             });
-
         const uploadedImage =
             await imageKit.upload({
 

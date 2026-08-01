@@ -18,7 +18,7 @@ const generationSchema = new mongoose.Schema({
     },
     mediaType: {
         type: String,
-        enum: ['image', 'video', 'audio']
+        enum: ['image', 'video']
     },
     tone: {
         type: String

@@ -160,7 +160,6 @@ export default function Testimonials() {
                             <div
                                 className={`
                                     flex items-center gap-3 pt-2 border-t transition-all
-
                                     ${
                                         theme === "dark"
                                             ? "border-[#ffffff10]"

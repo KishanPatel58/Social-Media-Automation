@@ -71,7 +71,7 @@ export default function Auth() {
                 icon: '🚨'
             })
         }
-        finally{
+        finally {
             setLoading(false)
         }
     }
@@ -100,7 +100,7 @@ export default function Auth() {
         try {
             setOtpLoading(true)
             localStorage.setItem("formtype", "otpverify")
-            const response = await api.post("/api/auth/resendOtpverifyemail", {email:localStorage.getItem("email")});
+            const response = await api.post("/api/auth/resendOtpverifyemail", { email: localStorage.getItem("email") });
             toast.dismiss(loadings)
             toast(response.data.message, { icon: '🥳' });
 
@@ -147,27 +147,7 @@ export default function Auth() {
             newTheme
         );
     };
-    useEffect(() => {
-        const currentFormType = localStorage.getItem("formtype");
-        if (!currentFormType) {
-            return
-        } else {
-            setFormType(currentFormType)
-        }
-    }, [])
-    useEffect(() => {
-        const currentEmail = localStorage.getItem("email");
-        if (!currentEmail) {
-            return
-        } else {
-            setEmail(currentEmail)
-        }
-    }, [])
-    useEffect(()=>{
-        if(localStorage.getItem("user")){
-            navigate("/dashboard")
-        }
-    },[])
+
     const stars = useMemo(() => {
 
         return [...Array(60)].map((_, i) => ({
@@ -194,6 +174,24 @@ export default function Auth() {
         }));
 
     }, []);
+    useEffect(() => {
+        const currentFormType = localStorage.getItem("formtype");
+        if (!currentFormType) {
+            return
+        } else {
+            setFormType(currentFormType)
+        }
+    }, [])
+    useEffect(() => {
+        const currentEmail = localStorage.getItem("email");
+        if (!currentEmail) {
+            return
+        } else {
+            setEmail(currentEmail)
+        }
+    }, [])
+
+
     return (
 
         <div
@@ -839,22 +837,22 @@ export default function Auth() {
                                     : (
                                         <>
                                             <div className="flex items-center justify-center gap-2">
-            
+
                                                 {otpLoading && (<Countdown
-                                                onComplete={()=>setOtpLoading(false)}  renderer={renderer} date={Date.now() + 20000} />)}
+                                                    onComplete={() => setOtpLoading(false)} renderer={renderer} date={Date.now() + 20000} />)}
                                                 {!otpLoading && (
                                                     <>
-                                                    Resend Otp?
-                                                    <button
-                                                    onClick={() => handleResendOtp()}
-                                                    className="
+                                                        Resend Otp?
+                                                        <button
+                                                            onClick={() => handleResendOtp()}
+                                                            className="
                                                 text-red-500
                                                 hover:text-red-400
                                             "
-                                                >
-                                                    Click
-                                                </button>
-                                                </>)}
+                                                        >
+                                                            Click
+                                                        </button>
+                                                    </>)}
                                             </div>
                                         </>
                                     )

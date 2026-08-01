@@ -11,10 +11,7 @@ const ENV = require("../config/environments/env");
 const postModel = require("../models/post.model");
 const imageKit = require("../config/imagekit/imagekit.config");
 
-const generatePost = async (
-    req,
-    res
-) => {
+const generatePost = async (req,res) => {
 
     try {
 
@@ -23,8 +20,6 @@ const generatePost = async (
             tone,
             generateImage,
         } = req.body;
-
-
 
         const geminiApiKey =
             ENV.GEMINI_API_KEY;
@@ -36,9 +31,7 @@ const generatePost = async (
                     "ApiKey is Missing.."
             });
         }
-
-
-
+        
         const ai =
             new GoogleGenAI({
 
@@ -56,7 +49,6 @@ const generatePost = async (
 
                 contents:
                     `You are a social media manager.
-
 Create a social media post with this prompt:
 
 "${prompt}"
@@ -143,7 +135,6 @@ imagePrompt should be highly descriptive.`,
 
                 user:
                     req.user._id,
-
                 prompt,
 
                 content,
@@ -213,7 +204,6 @@ const schedulePost = async (req, res) => {
             }
         }
         const fs = require("fs");
-
         let mediaUrl = req.body.mediaUrl;
         let mediaType = req.body.mediaType;
         if (req.file) {
@@ -248,9 +238,126 @@ const schedulePost = async (req, res) => {
         return res.status(500).json({ message: `${error.message}` });
     }
 }
+const deletePost = async (req, res) => {
+    try {
+        const { postid } = req.params;
+        // Find the post and make sure it belongs to the logged-in user
+        const post = await postModel.findOne({
+            _id: postid,
+            user: req.user._id,
+        });
+
+        if (!post) {
+            return res.status(404).json({
+                success: false,
+                message: "Post not found or you don't have permission to delete it.",
+            });
+        }
+        // Correct way to delete
+        await postModel.deleteOne({ _id: postid });
+
+        return res.status(200).json({
+            success: true,
+            message: "Post Deleted Successfully.",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: `Error: ${error.message}`,
+        });
+    }
+};
+
+const updatePost = async (req, res) => {
+  try {
+    const { postid } = req.params;
+    const { content, platforms, scheduledFor, mediaType, removeMedia } =
+      req.body;
+    const post = await postModel.findOne({
+      _id: postid,
+      user: req.user._id,
+    });
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found or you don't have permission to update it.",
+      });
+    }
+
+    // Parse platforms
+    let parsedPlatforms = platforms;
+    if (typeof platforms === "string") {
+      try {
+        parsedPlatforms = JSON.parse(platforms);
+      } catch (error) {
+        parsedPlatforms = platforms.split(",").map((p) => p.trim());
+      }
+    }
+
+    // Update text fields
+    if (content !== undefined) post.content = content;
+    if (parsedPlatforms !== undefined) post.platforms = parsedPlatforms;
+    if (scheduledFor !== undefined) post.scheduledFor = scheduledFor;
+
+    // ── Handle media ──────────────────────────────────────
+    const fs = require("fs");
+    // Case 1: User uploaded a new file
+    if (req.file) {
+      const result = await imageKit.upload({
+        file: fs.readFileSync(req.file.path),
+        fileName: req.file.originalname,
+      });
+
+      post.mediaUrl = result.url;
+
+      const mime = req.file.mimetype;
+      if (mime.startsWith("image/")) {
+        post.mediaType = "image";
+      } else if (mime.startsWith("video/")) {
+        post.mediaType = "video";
+      }
+
+      // optional: delete temp file
+      try {
+        fs.unlinkSync(req.file.path);
+      } catch (error) {
+        return res.status(401).json({
+            success: false,
+            message: "Problem To Update."
+        })
+      }
+    }
+    // Case 2: User removed media
+    else if (removeMedia === "true") {
+      post.mediaUrl = "";
+      post.mediaType = undefined;
+    }
+    // Case 3: Only mediaType sent (no file change)
+    else if (mediaType !== undefined) {
+      post.mediaType = mediaType || undefined;
+    }
+
+    await post.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Post updated successfully.",
+      post,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error: ${error.message}`,
+    });
+  }
+};
+
 module.exports = {
     generatePost,
     getGenerations,
     getPosts,
-    schedulePost
+    schedulePost,
+    deletePost,
+    updatePost
 };

@@ -2,7 +2,7 @@
 /* eslint-disable react-refresh/only-export-components */
 
 import React from "react";
-import { SiX, SiFacebook, SiInstagram } from "@icons-pack/react-simple-icons";
+import { SiInstagram } from "@icons-pack/react-simple-icons";
 import img_1 from "./img-1.jpg";
 import img_2 from "./img-2.jpg";
 import img_3 from "./img-3.jpg";

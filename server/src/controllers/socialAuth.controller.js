@@ -66,9 +66,6 @@ const generateAuthUrl = async (req, res) => {
 const syncAccounts = async (req, res) => {
     try {
         const profileId = await getOrCreateZernioProfile(req.user);
-        console.log("================================");
-        console.log("Current User:", req.user.email);
-        console.log("Profile ID:", profileId);
         const result = await zernio.accounts.listAccounts({
             query: {
                 profileId

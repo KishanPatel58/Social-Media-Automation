@@ -353,11 +353,42 @@ const updatePost = async (req, res) => {
   }
 };
 
+const deleteGeneration = async (req, res) => {
+  try {
+    const { postid } = req.params;
+
+    const generation = await generationModel.findOne({
+      _id: postid,
+      user: req.user._id || req.user.id, // only owner can delete
+    });
+
+    if (!generation) {
+      return res.status(404).json({
+        success: false,
+        message: "Generation not found",
+      });
+    }
+
+    await generationModel.deleteOne({ _id: postid });
+
+    return res.status(200).json({
+      success: true,
+      message: "Generation deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
     generatePost,
     getGenerations,
     getPosts,
     schedulePost,
     deletePost,
-    updatePost
+    updatePost,
+    deleteGeneration
 };

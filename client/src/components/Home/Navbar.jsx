@@ -181,11 +181,11 @@ export default function Navbar() {
                         <>
                             <img src={user?.avatar} className="w-10 rounded-full" alt="Profile Logo" />
                         </>
-                    ) : (
+                    ) : user?.name ? (
                         <h1 className="h-10 w-10 bg-red-500 flex items-center justify-center rounded-full text-white font-semibold">
                             {profileLetterLogo}
                         </h1>
-                    )}
+                    ) : ""}
 
                     {/* THEME BUTTON */}
 

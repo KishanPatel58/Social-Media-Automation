@@ -16,7 +16,7 @@ import { authContext } from "../../context/auth/AuthContext";
 
 export default function Navbar() {
 
-    const { user } = useContext(authContext)
+    const { user, handleLogout } = useContext(authContext)
 
     const { theme, setTheme } = useContext(themeContext);
 
@@ -43,7 +43,7 @@ export default function Navbar() {
                 : "light"
         );
     };
-
+    const profileLetterLogo = !user?.avatar && (String(user?.name.charAt(0) + user?.name.split(" ")[1].charAt(0)))
     return (
         <nav
             className={`
@@ -152,29 +152,40 @@ export default function Navbar() {
                                 }
                             `}
                         >
-                            {!user?"Sign In":""}
+                            {!user ? "Sign In" : ""}
                         </Link>
 
                         <Link
-                            to={user?"/dashboard":"/login"}
+                            to={user ? "/dashboard" : "/login"}
                             className="
                                 flex items-center gap-1.5
                                 text-sm
-                                bg-red-500 hover:bg-red-600
+                                border
+                                border-red-500 hover:bg-red-500
                                 text-white
                                 px-4 py-2
                                 rounded-full
-                                shadow-sm
-                                hover:shadow-red-200
                                 hover:shadow-md
                                 transition-all
+                                duration-300
                             "
                         >
-                            {!user?"Get Started":"Go to Dashboard"}
+                            {!user ? "Get Started" : "Go to Dashboard"}
 
                             <ArrowRightIcon className="size-3.5" />
                         </Link>
                     </div>
+
+                    {/* Profile Logo */}
+                    {user?.avatar ? (
+                        <>
+                            <img src={user?.avatar} className="w-10 rounded-full" alt="Profile Logo" />
+                        </>
+                    ) : (
+                        <h1 className="h-10 w-10 bg-red-500 flex items-center justify-center rounded-full text-white font-semibold">
+                            {profileLetterLogo}
+                        </h1>
+                    )}
 
                     {/* THEME BUTTON */}
 
@@ -333,7 +344,7 @@ export default function Navbar() {
                     </a>
 
                     <Link
-                        to="/login"
+                        to={user ? "/dashboard" : "/login"}
                         onClick={() => setMenuOpen(false)}
                         className="
                             bg-red-500 hover:bg-red-600
@@ -344,7 +355,7 @@ export default function Navbar() {
                             transition-all
                         "
                     >
-                        Get Started
+                        {user ? "Go to Dashboard" : "Get Started"}
 
                         <ArrowRightIcon className="size-4" />
                     </Link>

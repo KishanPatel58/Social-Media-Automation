@@ -29,7 +29,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     const { theme, setTheme } =
         useContext(themeContext);
 
-    const { user, setUser } = useContext(authContext)
+    const { user, setUser, handleLogout } = useContext(authContext)
     const navlinks = [
         {
             name: "Dashboard",
@@ -81,20 +81,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 : "light"
         );
     };
-    const handleLogout = async () => {
-        const loadings = toast.loading("Processing...")
-        try {
-            const response = await api.get("/api/auth/logout");
-            setUser(null);
-            localStorage.removeItem("user");
-            toast.dismiss(loadings);
-            toast.success(response.data.message,{icon: '🥳'});
-            navigate("/login")
-        } catch (error) {
-            toast.dismiss(loadings)
-            toast.error(error.message || "Problem to Logout")
-        }
-    }
+    
     return (
 
         <aside
@@ -305,9 +292,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     {/* AVATAR */}
 
                     {(user?.avatar || user?.user?.avatar) ? (<img className="size-8 rounded-full" src={user?.user?.avatar || user?.avatar} alt="profile" />) : (
-                        <div className= "size-8 rounded-full
-
-                    bg-gradient-to-br
+                        <div className="size-8 rounded-full bg-gradient-to-br
                     from-red-400
                     to-pink-400
 
@@ -317,8 +302,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     text-sm
                     font-medium
 
-                    shrink-0
-                    "
+                    shrink-0"
                         >
                             {
                                 user?.name?.charAt(0)

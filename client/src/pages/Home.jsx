@@ -7,6 +7,7 @@ import CTA from "../components/Home/CTA";
 import Footer from "../components/Home/Footer";
 import Lenis from "lenis";
 import { useEffect } from "react";
+import api from "../api/axios";
 
 export default function Landing() {
     useEffect(() => {
@@ -20,6 +21,22 @@ export default function Landing() {
         };
 
     }, []);
+    useEffect(() => {
+        const pingServer = async () => {
+            try {
+                await api.get("/health")
+                console.log("Backend pinged");
+            } catch (error) {
+                console.log("Backend unavailable");
+            }
+        };
+
+        pingServer();
+
+        const interval = setInterval(pingServer, 5 * 60 * 1000);
+
+        return () => clearInterval(interval);
+    }, [])
     return (
         <div className="min-h-screen bg-white text-slate-900 font-sans">
             <Navbar />

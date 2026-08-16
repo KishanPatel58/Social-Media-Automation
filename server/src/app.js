@@ -18,8 +18,11 @@ app.use(cors({
 }));
 console.log(ENV.PRODUCTION_CLIENT_URL)
 // Dummy Route
-app.get("/", (req, res) => {
-    res.send("Server is Running..")
+app.get("/health", (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "Backend is running",
+    });
 })
 
 // user routes

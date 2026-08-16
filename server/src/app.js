@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use(cors({
-    origin: ENV.DEVELOPMENT_CLIENT_URL,
+    origin: ENV.PRODUCTION_CLIENT_URL,
     credentials: true
 }));
 // Dummy Route

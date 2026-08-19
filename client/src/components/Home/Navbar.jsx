@@ -166,8 +166,8 @@ export default function Navbar() {
                                 flex items-center gap-1.5
                                 text-sm
                                 border
-                                border-red-500 hover:bg-red-500
-                                text-white
+                                border-red-500 hover:bg-red-500 hover:text-white
+                                text-red-500
                                 px-4 py-2
                                 rounded-full
                                 hover:shadow-md
@@ -184,8 +184,8 @@ export default function Navbar() {
                     {/* Profile Logo */}
                     {user?.avatar ? (
                         <>
-                            <img onClick={()=>setDropdownOpen(!dropdownOpen)} src={user?.avatar} className="w-10 rounded-full cursor-pointer" alt="Profile Logo" />
-                            <div className={`absolute w-[20vh] h-auto rounded-lg top-15 right-35 bg-zinc-900 p-3 pt-5 ${dropdownOpen ? "flex" : "hidden"}`}>
+                            <img onClick={()=>setDropdownOpen(!dropdownOpen)} src={user?.avatar} className="w-10 h-10 rounded-full cursor-pointer" alt="Profile Logo" />
+                            <div className={`absolute w-[20vh] h-auto rounded-lg top-16 sm:right-35 bg-zinc-900 p-3 pt-5 ${dropdownOpen ? "flex" : "hidden"}`}>
                                 <XCircleIcon onClick={()=>setDropdownOpen(false)} className="text-white cursor-pointer absolute top-1 right-1" size={16}/>
                                 <button onClick={handleLogout} className="flex justify-center items-center gap-2 bg-red-400 w-full py-2 text-white rounded-lg">Logout <LogOut size={14} /></button>
                             </div>
@@ -360,7 +360,7 @@ export default function Navbar() {
                         to={user ? "/dashboard" : "/login"}
                         onClick={() => setMenuOpen(false)}
                         className="
-                            bg-red-500 hover:bg-red-600
+                            bg-red-500 hover:bg-red-600 hover
                             text-white text-sm
                             rounded-full
                             px-4 py-3

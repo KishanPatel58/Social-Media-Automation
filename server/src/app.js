@@ -16,12 +16,12 @@ app.use(cors({
     origin: [ENV.PRODUCTION_CLIENT_URL],
     credentials: true
 }));
-console.log(ENV.PRODUCTION_CLIENT_URL)
+
 // Dummy Route
 app.get("/health", (req, res) => {
     res.status(200).json({
         success: true,
-        message: "Backend is running",
+        message: "Backend is running yoyo...",
     });
 })
 

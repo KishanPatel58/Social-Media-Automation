@@ -9,6 +9,7 @@ const ChangeName = () => {
     const { theme } = useContext(themeContext)
     const [name, setName] = useState("");
     const [isEditing, setIsEditing] = useState(false);
+    
     const handleChangeName = async (e) => {
         e.preventDefault();
         const Toasts = toast.loading("Changing...")

@@ -37,9 +37,18 @@ const initScheduler = async () => {
                     const payload = {
                         content: post.content,
                         publishNow: true,
-                        ...(post.mediaUrl ? { mediaItems: [{ type: post.mediaType || "image", url: post.mediaUrl }] } : {}),
+
+                        ...(post.media?.length
+                            ? {
+                                mediaItems: post.media.map((item) => ({
+                                    type: item.type,
+                                    url: item.url
+                                }))
+                            }
+                            : {}),
+
                         platforms: zernioPlatforms
-                    }
+                    };
                     console.log(`publishing post ${post._id} to zernio with media: ${post.mediaUrl || "none"}`)
                     const response = await zernio.posts.createPost({
                         body: payload
@@ -76,7 +85,7 @@ const initScheduler = async () => {
 const initRefreshTokenExpire = async () => {
     cron.schedule("0 0 * * *", async () => {
         const users = await userModel.find();
-        
+
         for (const user of users) {
 
             if (

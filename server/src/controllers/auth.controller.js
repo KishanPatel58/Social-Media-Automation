@@ -132,8 +132,10 @@ const verifyOtpAndCreateUser = async (req, res) => {
 }
 
 const loginUser = async (req, res) => {
+    console.log("Login Function Called....")
     try {
         const { email, password } = req.body;
+        console.log("Email and Password: ",email,password)
         if (!email || !password) {
             return res.status(401).json({
                 success: false,
@@ -147,6 +149,7 @@ const loginUser = async (req, res) => {
                 message: "Invalid Email or Password."
             })
         }
+        console.log(user)
         const isMatch = await bcrypt.compare(password, user.password)
         if (!isMatch) {
             return res.status(401).json({

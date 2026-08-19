@@ -21,7 +21,6 @@ const ProfileLayout = () => {
     const { theme } = useContext(themeContext);
     const username = user?.name || user?.user?.name || "";
     const logo = username.charAt(0) + username.split(" ")[1].charAt(0)
-    const [showEditProfileImage, setShowEditProfileImage] = useState(false)
     const handleProfileUpload = async (e) => {
         const file = e.target.files[0];
 
@@ -69,16 +68,14 @@ const ProfileLayout = () => {
             <div className="flex relative flex-col justify-start items-center w-full h-full">
                 <div className="w-full flex flex-col items-center justify-center">
                     <div
-                        onClick={()=>setOpenProfileView(true)}
-                        onMouseEnter={() => setShowEditProfileImage(true)}
-                        onMouseLeave={() => setShowEditProfileImage(false)}
-                        className="w-36 h-36 bg-[#FB2C36] rounded-full flex justify-center items-center text-white text-6xl relative overflow-hidden"
+                        className="bg-[#FB2C36] rounded-full flex justify-center items-center text-white text-6xl relative"
                     >
 
                         {(user?.avatar || user?.user?.avatar) ? (
                             <img
+                                 onClick={() => setOpenProfileView(true)}
                                 src={user?.avatar || user?.user?.avatar}
-                                className="w-full h-full object-cover"
+                                className="w-36 h-36 rounded-full object-cover"
                                 alt="profile"
                             />
                         ) : (
@@ -87,10 +84,7 @@ const ProfileLayout = () => {
 
                         <label
                             htmlFor="profile"
-                            className={`absolute bottom-3 z-60 right-3 bg-white text-black p-2 rounded-full cursor-pointer transition-all duration-300 ${showEditProfileImage
-                                ? "opacity-100"
-                                : "opacity-0"
-                                }`}
+                            className={`absolute bottom-3 z-60 right-2 bg-white text-black p-2 rounded-full cursor-pointer transition-all duration-300 opacity-100`}
                         >
                             <Pencil />
                         </label>
@@ -122,7 +116,7 @@ const ProfileLayout = () => {
                 <div className="mt-20 w-full">
                     <Outlet />
                 </div>
-                <div onClick={()=>setOpenProfileView(false)} className={`profile-view absolute z-[100] top-0 left-0 min-h-full min-w-full bg-[#0A0A0A] ${openProfileView ? "flex items-center justify-center" : "hidden"}`}>
+                <div onClick={() => setOpenProfileView(false)} className={`profile-view absolute z-[100] top-0 left-0 min-h-full min-w-full bg-[#0A0A0A] ${openProfileView ? "flex items-center justify-center" : "hidden"}`}>
                     <img src={user?.avatar} className='w-[40%] h-[50%]' alt="" />
                 </div>
             </div>

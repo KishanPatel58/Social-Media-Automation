@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+    --color-bg: #fafafa;
+    --color-text: #111111;
+    --font-sans: "Outfit", sans-serif;
+    --font-serif: "Urbanist", sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+    height: 100%;
+}
+
+html {
+    scroll-behavior: smooth !important;
+}
+
+body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    user-select: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+/* Custom scrollbar */
+
+::-webkit-scrollbar {
+    display: none;
+}

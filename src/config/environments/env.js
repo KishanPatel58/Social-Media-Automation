@@ -1,0 +1,21 @@
+require("dotenv").config({ quiet: true });
+
+module.exports = {
+    PORT: process.env.PORT,
+    MONGODB_URL: process.env.MONGODB_URL,
+    DEVELOPMENT_CLIENT_URL: process.env.DEVELOPMENT_CLIENT_URL,
+    PRODUCTION_CLIENT_URL: process.env.PRODUCTION_CLIENT_URL,
+    JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET,
+    JWT_REFRESH_SECRET: process.env.JWT_REFRESH_SECRET,
+    PRODUCT_ON: process.env.PRODUCT_ON,
+    ZERNIO_API_KEY: process.env.ZERNIO_API_KEY,
+    ZERNIO_BASE_URL: process.env.ZERNIO_BASE_URL,
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    GEMINI_MODEL: process.env.GEMINI_MODEL,
+    IMAGEKIT_URL_END_POINT: process.env.IMAGEKIT_URL_END_POINT,
+    IMAGEKIT_PUBLIC_KEY: process.env.IMAGEKIT_PUBLIC_KEY,
+    IMAGEKIT_PRIVATE_KEY: process.env.IMAGEKIT_PRIVATE_KEY,
+    EMAIL_USER: process.env.EMAIL_USER,
+    EMAIL_PASS: process.env.EMAIL_PASS,
+    APP_NAME: process.env.APP_NAME
+}

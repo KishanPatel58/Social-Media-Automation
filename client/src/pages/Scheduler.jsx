@@ -203,23 +203,26 @@ const Scheduler = () => {
 
   return (
 
-    <div className="h-full w-full flex items-center justify-center px-20">
+    <div className="min-h-full w-full px-4 sm:px-6 md:px-10 lg:px-20 py-4 sm:py-6">
 
       <div
         className="
-          flex flex-col
-          lg:flex-row
-          gap-6
-          h-full
-          w-full
-        "
+    flex
+    flex-col
+    lg:flex-row
+    gap-4
+    sm:gap-6
+    w-full
+    max-w-[1400px]
+    mx-auto
+  "
       >
 
         {/* =====================================================
             COMPOSE
         ====================================================== */}
 
-        <div className="!w-full lg:w-[460px]">
+        <div className="w-full lg:w-[460px] lg:shrink-0">
 
           <div
             className={`

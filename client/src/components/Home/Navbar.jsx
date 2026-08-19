@@ -2,7 +2,11 @@ import { Link } from "react-router-dom";
 import {
     ArrowRightIcon,
     Sun,
-    Moon
+    Moon,
+    CrossIcon,
+    LogOut,
+    XIcon,
+    XCircleIcon
 } from "lucide-react";
 
 import {
@@ -21,6 +25,7 @@ export default function Navbar() {
     const { theme, setTheme } = useContext(themeContext);
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     useEffect(() => {
 
@@ -179,11 +184,19 @@ export default function Navbar() {
                     {/* Profile Logo */}
                     {user?.avatar ? (
                         <>
-                            <img src={user?.avatar} className="w-10 rounded-full" alt="Profile Logo" />
+                            <img onClick={()=>setDropdownOpen(!dropdownOpen)} src={user?.avatar} className="w-10 rounded-full cursor-pointer" alt="Profile Logo" />
+                            <div className={`absolute w-[20vh] h-auto rounded-lg top-15 right-35 bg-zinc-900 p-3 pt-5 ${dropdownOpen ? "flex" : "hidden"}`}>
+                                <XCircleIcon onClick={()=>setDropdownOpen(false)} className="text-white cursor-pointer absolute top-1 right-1" size={16}/>
+                                <button onClick={handleLogout} className="flex justify-center items-center gap-2 bg-red-400 w-full py-2 text-white rounded-lg">Logout <LogOut size={14} /></button>
+                            </div>
                         </>
                     ) : user?.name ? (
-                        <h1 className="h-10 w-10 bg-red-500 flex items-center justify-center rounded-full text-white font-semibold">
+                        <h1 onClick={()=>setDropdownOpen(!dropdownOpen)} className="h-10 w-10 bg-red-500 flex items-center justify-center rounded-full text-white font-semibold relative cursor-pointer">
                             {profileLetterLogo}
+                            <div className={`absolute w-[20vh] h-auto rounded-lg top-15 right-35 bg-zinc-900 p-3 pt-5 ${dropdownOpen ? "flex" : "hidden"}`}>
+                                <XCircleIcon onClick={()=>setDropdownOpen(false)} className="text-white cursor-pointer absolute top-1 right-1" size={16}/>
+                                <button onClick={handleLogout} className="flex justify-center items-center gap-2 bg-red-400 w-full py-2 text-white rounded-lg">Logout <LogOut size={14} /></button>
+                            </div>
                         </h1>
                     ) : ""}
 

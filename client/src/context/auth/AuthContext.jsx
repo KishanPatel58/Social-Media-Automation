@@ -1,6 +1,10 @@
 import { createContext, useEffect, useState } from 'react'
+import {toast} from 'react-hot-toast'
+import api from '../../api/axios';
+import { useNavigate } from 'react-router-dom';
 export const authContext = createContext();
 const AuthContext = (props) => {
+    const navigate = useNavigate()
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false)

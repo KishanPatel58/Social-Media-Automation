@@ -9,6 +9,7 @@ import api from "../../api/axios";
 const ProfileLayout = () => {
     const location = useLocation()
     const { user, setUser } = useContext(authContext);
+    const [openProfileView, setOpenProfileView] = useState(false)
     const adminoption = [
         { name: "Change Name", to: "/profile/changename", no: 1 },
         { name: "Change Theme", to: "/profile/changetheme", no: 2 },
@@ -64,62 +65,69 @@ const ProfileLayout = () => {
     };
 
     return (
-        <div className="flex flex-col justify-start items-center w-full h-full">
-            <div className="w-full flex flex-col items-center justify-center">
-                <div
-                    onMouseEnter={() => setShowEditProfileImage(true)}
-                    onMouseLeave={() => setShowEditProfileImage(false)}
-                    className="w-36 h-36 bg-[#FB2C36] rounded-full flex justify-center items-center text-white text-6xl relative overflow-hidden"
-                >
+        <>
+            <div className="flex relative flex-col justify-start items-center w-full h-full">
+                <div className="w-full flex flex-col items-center justify-center">
+                    <div
+                        onClick={()=>setOpenProfileView(true)}
+                        onMouseEnter={() => setShowEditProfileImage(true)}
+                        onMouseLeave={() => setShowEditProfileImage(false)}
+                        className="w-36 h-36 bg-[#FB2C36] rounded-full flex justify-center items-center text-white text-6xl relative overflow-hidden"
+                    >
 
-                    {(user?.avatar || user?.user?.avatar) ? (
-                        <img
-                            src={user?.avatar || user?.user?.avatar}
-                            className="w-full h-full object-cover"
-                            alt="profile"
-                        />
-                    ) : (
-                        logo
-                    )}
+                        {(user?.avatar || user?.user?.avatar) ? (
+                            <img
+                                src={user?.avatar || user?.user?.avatar}
+                                className="w-full h-full object-cover"
+                                alt="profile"
+                            />
+                        ) : (
+                            logo
+                        )}
 
-                    <label
-                        htmlFor="profile"
-                        className={`absolute bottom-3 z-60 right-3 bg-white text-black p-2 rounded-full cursor-pointer transition-all duration-300 ${showEditProfileImage
+                        <label
+                            htmlFor="profile"
+                            className={`absolute bottom-3 z-60 right-3 bg-white text-black p-2 rounded-full cursor-pointer transition-all duration-300 ${showEditProfileImage
                                 ? "opacity-100"
                                 : "opacity-0"
-                            }`}
-                    >
-                        <Pencil />
-                    </label>
-
-                    <input
-                        hidden
-                        id="profile"
-                        type="file"
-                        accept="image/*"
-                        onChange={handleProfileUpload}
-                    />
-
-                </div>
-                <div className="option-pane flex justify-center items-center gap-3 mt-16 flex-wrap">
-                    {adminoption.map((option, idx) => (
-                        <button
-                            key={idx}
-                            onClick={() => { setSelectedOption(option.no); navigate(option.to) }}
-                            className={`px-4 py-2 rounded-lg transition-all duration-300 ${location.pathname === option.to
-                                ? "bg-[#FB2C36] text-white"
-                                : "bg-gray-200 text-black hover:bg-gray-300"
                                 }`}
                         >
-                            {option.name}
-                        </button>
-                    ))}
+                            <Pencil />
+                        </label>
+
+                        <input
+                            hidden
+                            id="profile"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleProfileUpload}
+                        />
+
+                    </div>
+                    <div className="option-pane flex justify-center items-center gap-3 mt-16 flex-wrap">
+                        {adminoption.map((option, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => { setSelectedOption(option.no); navigate(option.to) }}
+                                className={`px-4 py-2 rounded-lg transition-all duration-300 ${location.pathname === option.to
+                                    ? "bg-[#FB2C36] text-white"
+                                    : "bg-gray-200 text-black hover:bg-gray-300"
+                                    }`}
+                            >
+                                {option.name}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+                <div className="mt-20 w-full">
+                    <Outlet />
+                </div>
+                <div onClick={()=>setOpenProfileView(false)} className={`profile-view absolute top-0 left-0 min-h-full min-w-full bg-[#0A0A0A] ${openProfileView ? "flex items-center justify-center" : "hidden"}`}>
+                    <img src={user?.avatar} className='w-[40%] h-[50%]' alt="" />
                 </div>
             </div>
-            <div className="mt-20 w-full">
-                <Outlet />
-            </div>
-        </div>
+
+        </>
     )
 }
 

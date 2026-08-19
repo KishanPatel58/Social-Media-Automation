@@ -5,9 +5,9 @@ const upload = require("../middlewares/upload.middleware");
 const postRouter = express.Router();
 postRouter.get("/",protect,getPosts)
 postRouter.get("/generations",protect,getGenerations)
-postRouter.post("/",protect,upload.single("media"),schedulePost)
+postRouter.post("/",protect,upload.array("media", 10),schedulePost)
 postRouter.post("/generate",protect,generatePost)
-postRouter.put("/update/:postid",protect,upload.single("media"),updatePost)
+postRouter.put("/update/:postid",protect,upload.array("media", 10),updatePost)
 postRouter.delete("/delete/:postid",protect,deletePost)
 postRouter.delete("/generations/:postid",protect,deleteGeneration)
 module.exports = postRouter;

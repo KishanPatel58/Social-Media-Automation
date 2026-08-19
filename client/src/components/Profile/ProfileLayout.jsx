@@ -84,7 +84,7 @@ const ProfileLayout = () => {
 
                         <label
                             htmlFor="profile"
-                            className={`absolute bottom-3 z-60 right-2 bg-white text-black p-2 rounded-full cursor-pointer transition-all duration-300 opacity-100`}
+                            className={`absolute bottom-3 z-30 right-2 bg-white text-black p-2 rounded-full cursor-pointer transition-all duration-300 opacity-100`}
                         >
                             <Pencil />
                         </label>

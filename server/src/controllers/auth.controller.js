@@ -134,7 +134,6 @@ const verifyOtpAndCreateUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log("Email and Password: ", email, password)
         if (!email || !password) {
             return res.status(401).json({
                 success: false,

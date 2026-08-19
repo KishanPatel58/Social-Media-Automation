@@ -444,37 +444,58 @@ const UpcomingPost = () => {
                 </div>
 
                 {/* Split by Platform */}
-                <div className="flex max-h-72 overflow-hidden">
+                {/* Split by Platform */}
+                <div className="flex flex-col md:flex-row max-h-[32rem] overflow-hidden">
+
                     {/* LinkedIn Column */}
                     <div
                         className={`
-              w-1/2 flex flex-col border-r overflow-y-auto
-              ${theme === "light" ? "border-slate-100" : "border-[#ffffff10]"}
-            `}
+            w-full md:w-1/2
+            flex flex-col
+            min-w-0
+            border-b md:border-b-0 md:border-r
+            overflow-y-auto
+            max-h-64 md:max-h-none
+
+            ${theme === "light"
+                                ? "border-slate-100"
+                                : "border-[#ffffff10]"
+                            }
+        `}
                     >
+
                         <div
                             className={`
-                sticky top-0 z-10 flex items-center justify-center gap-2
-                px-4 py-3 text-sm font-medium border-b
+                sticky top-0 z-10
+                flex items-center justify-center gap-2
+                px-4 py-3
+                text-sm font-medium
+                border-b
+
                 ${theme === "light"
                                     ? "bg-white border-slate-100 text-slate-800"
                                     : "bg-[#111111] border-[#ffffff10] text-white"
                                 }
-              `}
+            `}
                         >
                             LinkedIn
+
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
                                 fill="currentColor"
-                                className="size-4"
+                                className="size-4 shrink-0"
                             >
-                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 0 .792 1.771 0h20.451z" />
                             </svg>
+
                             <span
                                 className={`
-                  text-xs font-bold px-1.5 py-0.5 rounded-full
-                  ${theme === "light"
+                    text-xs font-bold
+                    px-1.5 py-0.5
+                    rounded-full
+
+                    ${theme === "light"
                                         ? "bg-zinc-100 text-zinc-600"
                                         : "bg-[#1a1a1a] text-zinc-400"
                                     }
@@ -483,27 +504,50 @@ const UpcomingPost = () => {
                                 {linkedinPosts.length}
                             </span>
                         </div>
-                        <div className="flex-1">{renderPostList(linkedinPosts, "linkedin")}</div>
+
+                        <div className="flex-1 min-w-0">
+                            {renderPostList(linkedinPosts, "linkedin")}
+                        </div>
+
                     </div>
 
+
                     {/* Instagram Column */}
-                    <div className="w-1/2 flex flex-col overflow-y-auto">
+                    <div
+                        className="
+            w-full md:w-1/2
+            flex flex-col
+            min-w-0
+            overflow-y-auto
+            max-h-64 md:max-h-none
+        "
+                    >
+
                         <div
                             className={`
-                sticky top-0 z-10 flex items-center justify-center gap-2
-                px-4 py-3 text-sm font-medium border-b
+                sticky top-0 z-10
+                flex items-center justify-center gap-2
+                px-4 py-3
+                text-sm font-medium
+                border-b
+
                 ${theme === "light"
                                     ? "bg-white border-slate-100 text-slate-800"
                                     : "bg-[#111111] border-[#ffffff10] text-white"
                                 }
-              `}
+            `}
                         >
                             Instagram
-                            <SiInstagram className="size-4" />
+
+                            <SiInstagram className="size-4 shrink-0" />
+
                             <span
                                 className={`
-                  text-xs font-bold px-1.5 py-0.5 rounded-full
-                  ${theme === "light"
+                    text-xs font-bold
+                    px-1.5 py-0.5
+                    rounded-full
+
+                    ${theme === "light"
                                         ? "bg-zinc-100 text-zinc-600"
                                         : "bg-[#1a1a1a] text-zinc-400"
                                     }
@@ -512,8 +556,13 @@ const UpcomingPost = () => {
                                 {instagramPosts.length}
                             </span>
                         </div>
-                        <div className="flex-1">{renderPostList(instagramPosts, "instagram")}</div>
+
+                        <div className="flex-1 min-w-0">
+                            {renderPostList(instagramPosts, "instagram")}
+                        </div>
+
                     </div>
+
                 </div>
             </div>
 

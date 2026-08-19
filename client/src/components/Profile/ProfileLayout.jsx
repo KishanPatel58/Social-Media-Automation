@@ -122,7 +122,7 @@ const ProfileLayout = () => {
                 <div className="mt-20 w-full">
                     <Outlet />
                 </div>
-                <div onClick={()=>setOpenProfileView(false)} className={`profile-view absolute top-0 left-0 min-h-full min-w-full bg-[#0A0A0A] ${openProfileView ? "flex items-center justify-center" : "hidden"}`}>
+                <div onClick={()=>setOpenProfileView(false)} className={`profile-view absolute z-[100] top-0 left-0 min-h-full min-w-full bg-[#0A0A0A] ${openProfileView ? "flex items-center justify-center" : "hidden"}`}>
                     <img src={user?.avatar} className='w-[40%] h-[50%]' alt="" />
                 </div>
             </div>

@@ -56,14 +56,13 @@ const PublishedPost = () => {
         key={post._id || idx}
         className={`
           px-5 py-4 transition-colors border-b last:border-b-0
-          ${
-            theme === "light"
-              ? "hover:bg-slate-50/60 border-slate-100"
-              : "hover:bg-[#1a1a1a] border-[#ffffff08]"
+          ${theme === "light"
+            ? "hover:bg-slate-50/60 border-slate-100"
+            : "hover:bg-[#1a1a1a] border-[#ffffff08]"
           }
         `}
       >
-        <div className="flex items-center justify-between mb-2">
+        <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
           <div className="flex gap-1.5 items-center">
             {post.platforms?.map((pl) => {
               const meta = PLATFORMS.find((platform) => platform.id === pl);
@@ -79,15 +78,14 @@ const PublishedPost = () => {
             })}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 min-w-0">
             {post.mediaType && (
               <span
                 className={`
                   text-xs border px-1.5 py-0.5 rounded-md font-semibold capitalize
-                  ${
-                    theme === "light"
-                      ? "bg-slate-100 text-slate-600 border-slate-200"
-                      : "bg-[#1a1a1a] text-slate-300 border-[#ffffff12]"
+                  ${theme === "light"
+                    ? "bg-slate-100 text-slate-600 border-slate-200"
+                    : "bg-[#1a1a1a] text-slate-300 border-[#ffffff12]"
                   }
                 `}
               >
@@ -96,12 +94,11 @@ const PublishedPost = () => {
             )}
 
             <span
-              className={`
-                text-xs
-                ${theme === "light" ? "text-slate-400" : "text-slate-500"}
-              `}
+              className={`text-xs truncate max-w-full ${theme === "light" ?"text-slate-400" : "text-slate-500"}`}
             >
-              {new Date(post.scheduledFor || post.publishedAt || post.createdAt).toLocaleString()}
+              {new Date(
+                post.scheduledFor || post.publishedAt || post.createdAt
+              ).toLocaleString()}
             </span>
           </div>
         </div>
@@ -122,10 +119,9 @@ const PublishedPost = () => {
     <div
       className={`
         rounded-2xl border overflow-hidden
-        ${
-          theme === "light"
-            ? "bg-white border-slate-200"
-            : "bg-[#111111] border-[#ffffff10]"
+        ${theme === "light"
+          ? "bg-white border-slate-200"
+          : "bg-[#111111] border-[#ffffff10]"
         }
       `}
     >
@@ -153,10 +149,9 @@ const PublishedPost = () => {
         <span
           className={`
             ml-auto text-xs font-bold px-2 py-0.5 rounded-full
-            ${
-              theme === "light"
-                ? "bg-zinc-100 text-zinc-700"
-                : "bg-[#1a1a1a] text-zinc-300"
+            ${theme === "light"
+              ? "bg-zinc-100 text-zinc-700"
+              : "bg-[#1a1a1a] text-zinc-300"
             }
           `}
         >
@@ -165,22 +160,22 @@ const PublishedPost = () => {
       </div>
 
       {/* Split by Platform */}
-      <div className="flex max-h-72 overflow-hidden">
+      <div className="flex flex-col md:flex-row md:max-h-72 overflow-visible md:overflow-hidden">
         {/* LinkedIn Column */}
         <div
           className={`
-            w-1/2 flex flex-col border-r overflow-y-auto
-            ${theme === "light" ? "border-slate-100" : "border-[#ffffff10]"}
-          `}
+    w-full md:w-1/2 flex flex-col
+    border-b md:border-b-0 md:border-r
+    overflow-y-auto
+    ${theme === "light" ? "border-slate-100" : "border-[#ffffff10]"}`}
         >
           <div
             className={`
               sticky top-0 z-10 flex items-center justify-center gap-2
               px-4 py-3 text-sm font-medium border-b
-              ${
-                theme === "light"
-                  ? "bg-white border-slate-100 text-slate-800"
-                  : "bg-[#111111] border-[#ffffff10] text-white"
+              ${theme === "light"
+                ? "bg-white border-slate-100 text-slate-800"
+                : "bg-[#111] border-[#ffffff10] text-white"
               }
             `}
           >
@@ -196,10 +191,9 @@ const PublishedPost = () => {
             <span
               className={`
                 text-xs font-bold px-1.5 py-0.5 rounded-full
-                ${
-                  theme === "light"
-                    ? "bg-zinc-100 text-zinc-600"
-                    : "bg-[#1a1a1a] text-zinc-400"
+                ${theme === "light"
+                  ? "bg-zinc-100 text-zinc-600"
+                  : "bg-[#1a1a1a] text-zinc-400"
                 }
               `}
             >
@@ -210,15 +204,14 @@ const PublishedPost = () => {
         </div>
 
         {/* Instagram Column */}
-        <div className="w-1/2 flex flex-col overflow-y-auto">
+        <div className="w-full md:w-1/2 flex flex-col overflow-y-auto">
           <div
             className={`
               sticky top-0 z-10 flex items-center justify-center gap-2
               px-4 py-3 text-sm font-medium border-b
-              ${
-                theme === "light"
-                  ? "bg-white border-slate-100 text-slate-800"
-                  : "bg-[#111111] border-[#ffffff10] text-white"
+              ${theme === "light"
+                ? "bg-white border-slate-100 text-slate-800"
+                : "bg-[#111111] border-[#ffffff10] text-white"
               }
             `}
           >
@@ -227,10 +220,9 @@ const PublishedPost = () => {
             <span
               className={`
                 text-xs font-bold px-1.5 py-0.5 rounded-full
-                ${
-                  theme === "light"
-                    ? "bg-zinc-100 text-zinc-600"
-                    : "bg-[#1a1a1a] text-zinc-400"
+                ${theme === "light"
+                  ? "bg-zinc-100 text-zinc-600"
+                  : "bg-[#1a1a1a] text-zinc-400"
                 }
               `}
             >
